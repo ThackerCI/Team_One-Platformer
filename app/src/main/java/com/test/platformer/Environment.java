@@ -19,6 +19,11 @@ public class Environment {
     private boolean iterationFlag;
     private static final int GRAVITY = 5;
 
+    // creating an empty level for level 1 and a test character
+    Level l1 = new Level(new ArrayList<Block>(), new ArrayList<Record>(), new Record(new Point(0,0), false), new Point(0,0));
+    Character player = new Character(new Point(20, 20), 3, 5, 3, 5);
+
+
     public Environment() {
         blocks = new ArrayList<Block>();
         records = new ArrayList<Record>();

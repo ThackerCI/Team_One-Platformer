@@ -30,6 +30,20 @@ public class Character {
     //dimensions of the character
     private Point dimensions;
 
+    public Character(Point dimensions, int defense, int speed, int strength, int maxHealth) {
+        this.shotCoolDown = 0;
+        this.location = new Point(0, 0);
+        this.jumpTime = 0;
+        this.direction = 1;
+        this.dimensions = dimensions;
+        this.defense = defense;
+        this.speed = speed;
+        this.velocity = new Point(0, 0);
+        this.strength = strength;
+        this.health = maxHealth;
+        this.maxHealth = maxHealth;
+    }
+
     public int getShotCoolDown() {
         return shotCoolDown;
     }
@@ -112,11 +126,11 @@ public class Character {
 
     /**
      * Construct a Character based on a sprite image and a location.
-     * <p>
+     * <p/>
      * //     * @param ref The reference to the image to be displayed for this character
      * //     * @param x   The initial x location of this Character
      * //     * @param y   The initial y location of this Character
-     * <p>
+     * <p/>
      * public Character(String ref,int x,int y) {
      * this.sprite = SpriteStore.get().getSprite(ref);
      * this.x = x;
