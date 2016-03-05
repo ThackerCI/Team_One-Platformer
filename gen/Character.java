@@ -1,5 +1,5 @@
-package com.example.h4l3st0rm.willitbeinjava;
-import android.graphics.Rect;
+package com.test.platformer;
+
 /**
  * A character is what will be controlled by the player.The character
  * class is responsible for resolving and appropriately outputting
@@ -8,224 +8,189 @@ import android.graphics.Rect;
  * @author John Hale
  * Help from Kevin Glass and Dr. Jerry Perez's Space Invader's project.
  */
+
+import android.graphics.Point;
 public class Character {
 
-    /**Cooldown time after each shot*/
-    private double shotCoolDown;
-    /**Time of last shot fired*/
-    private double lastShot;
-    /**Current Location of character x-axis*/
-    private double x;
-    /**Current Location of character y-axis*/
-    private double y;
-    /**Start time of character jump*/
+    //Cooldown time after each shot
+    private int shotCoolDown;
+    //max cooldown time after each shot
+    private final int maxShotCoolDown = 10;
+    //location of the character
+    private Point location;
+    //Time the character began his jump
     private double initialJump;
-    /**Time character will be moving vertically in case of jump*/
+    //Time character will be moving vertically in case of jump
     private int jumpTime;
-    /**The velocity of gravity downwards, or upward jump*/
-    private int verticalVelocity;
-    /**True if character is on a block object*/
-    private boolean onBlock;
-    /** The sprite that represents this entity */
-//    protected Sprite sprite;
-    /**Scalar multiple effecting enemy attack*/
+    //maximum time the character will move vertically in case of jump
+    private final int maxJumpTime = 10;
+    // direction is -1 for left, 1 for right
+    private int direction;
+    //dimensions of the character
+    private Point dimensions;
+    //Scalar multiple effecting enemy attack
     private int defense;
-    /**Horizontal velocity of character*/
-    private int velocity;
-    /**Scalar multiple effecting character attack*/
+    //Max Velocity of the character = speed
+    private int speed;
+    //velocity of character
+    private Point velocity;
+    //Scalar multiple effecting character attack
     private int strength;
-    /**Current health of character*/
+    //Current health of character
     private int health;
-    /**Max health of character*/
+    //Max health of character
     private int maxHealth;
-    /** The rectangle used for this entity during collisions  resolution */
-    private Rect me;
-    /** The rectangle used for other entities during collision resolution */
-    private Rect him;
-    /** The size of the character, Currently set at 200*/
-    private static final int SQUARE_SIDE_LENGTH = 200;
 
-
-    /**
-     * Construct a Character based on a sprite image and a location.
-     *
-     * @param ref The reference to the image to be displayed for this character
-     * @param x The initial x location of this Character
-     * @param y The initial y location of this Character
-     */
-    /**
-     public Character(String ref,int x,int y) {
-     this.sprite = SpriteStore.get().getSprite(ref);
-     this.x = x;
-     this.y = y;
-     }
-     */
-
-
-
-    /**********************Get/Set Functions*********************************************************/
-    /**
-     * Set the horizontal velocity of character.
-     *
-     * @param velocity The horizontal velocity of the character (pixels/sec)
-     * */
-    public void setVelocity(int velocity) {
-        this.velocity = velocity;
+    public Character() {
+        location = new Point(0, 0);
+        dimensions = new Point(0, 0);
+        velocity = new Point(0, 0);
+        direction = 1;
     }
 
-    /**
-     * Get the horizontal velocity of character.
-     *
-     * @return The horizontal velocity of character (pixels/sec)
-     * */
-    public int getVelocity() {
-        return velocity;
+    /**Initializes new Character*/
+    public Character(Point location, Point dimensions, int strength,
+                     int speed, int defense, int maxHealth) {
+        this.setLocation(location);
+        this.setDimensions(dimensions);
+        this.setStrength(strength);
+        this.setSpeed(speed);
+        this.setDefense(defense);
+        this.setMaxHealth(maxHealth);
+    }
+    /**Resets Character's health and velocity*/
+    public void reset() {
+        this.setHealth(this.getMaxHealth());
+        this.setDirection(1);
+        Point velocity = new Point(0, 0);
+        this.setVelocity(velocity);
     }
 
-    /**
-     * Set the x-axis location of the character
-     *
-     * @param x The current x-axis location of the character
-     */
-    public void setX(double x) {
-        this.x = x;
+    /**********************Get/Set Functions For Various Variables************************************/
+
+    public void setVelocity(Point velocity) {this.velocity = velocity;}
+    public Point getVelocity() {return velocity;}
+
+    public void setVelocityX(int x) {this.velocity.x = x;}
+    public void setVelocityY(int y) {this.velocity.y = y;}
+
+
+
+    public void setLocation(Point p) {
+        this.location.set(p.x, p.y);
+    }
+    public Point getLocation() {
+        return this.location;
     }
 
-    /**
-     * Get the current x-axis location of the character
-     *
-     * @return The current x-axis location of the character
-     */
-    public double getX() {
-        return x;
-    }
-    /**
-     * Set the y-axis location of the character
-     *
-     * @param y The current x-axis location of the character
-     */
-    public void setY(double y) {
-        this.y = y;
-    }
-
-    /**
-     * Get the current y-axis location of the character
-     *
-     * @return The current y-axis location of the character
-     */
-    public double getY() {
-        return y;
-    }
-    /**
-     * Set the defensive factor of character
-     *
-     * @param defense the defenseive factor character
-     */
     public void setDefense(int defense) {
         this.defense = defense;
     }
-
-    /**
-     * Get the Defensive stat of character
-     *
-     * @return The defensive stat of character
-     */
     public int getDefense() {
         return defense;
     }
 
-    /**
-     * Set the strength factor of character
-     *
-     * @param strength The strength factor of the character
-     */
     public void setStrength(int strength) {
         this.strength = strength;
     }
+    public int getStrength(){return this.strength;}
 
-    /**
-     * Set the current health of character
-     *
-     * @param health Current health of character
-     */
     public void setHealth(int health) {
         this.health = health;
     }
-
-    /**
-     * Get the current health of character
-     *
-     * @return the current health of character
-     */
     public int getHealth() {
         return health;
     }
 
-    /**
-     * Set the max health of the character
-     *
-     * @param maxHealth The max health of the character
-     */
+
     public void setMaxHealth(int maxHealth) {
         this.maxHealth = maxHealth;
     }
-
-    /**
-     * Get the max health of the character
-     *
-     * @return The max health of the character
-     */
-    public int getMaxHealth(){
+    public int getMaxHealth() {
         return maxHealth;
     }
 
+    public void setDimensions(Point p) {
+        dimensions.set(p.x, p.y);
+    }
+    public Point getDimensions() {
+        return dimensions;
+    }
+
+    public int getShotCoolDown() {
+        return shotCoolDown;
+    }
+    public void setShotCoolDown(int shotCoolDown) {
+        this.shotCoolDown = shotCoolDown;
+    }
+
+    public int getMaxShotCoolDown() {
+        return maxShotCoolDown;
+    }
+
+    public double getInitialJump() {
+        return initialJump;
+    }
+    public void setInitialJump(double initialJump) {
+        this.initialJump = initialJump;
+    }
+
+    public int getJumpTime() {
+        return jumpTime;
+    }
+    public void setJumpTime(int jumpTime) {
+        this.jumpTime = jumpTime;
+    }
+
+    public int getMaxJumpTime() {
+        return maxJumpTime;
+    }
+
+    public int getDirection() {
+        return direction;
+    }
+    public void setDirection(int direction) {
+        this.direction = direction;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+    public void setSpeed(int speed) {this.speed = speed;}
+
 /**************************Movement Functions*********************************************************/
     /**
-     * Request that the character move itself based on a certain ammount
+     * Request that the character move itself based on a certain amount
      * of time passing. This will also account for jump.
      *
-     * @param delta The ammount of time that has passed in milliseconds
+     * @param delta The amount of time that has passed in milliseconds
      */
-    public void horizontalMove(long delta) {
-        // update the location of the entity based on move speeds
-        this.x += (delta * this.velocity) / 1000;
+    public void horizontalMove(int direction) {
+        //update the location of the entity based on move speeds
+        this.setVelocityX(direction * this.getSpeed());
     }
 
-    /**
-     * Checks if verticalVelocity is positive is positive(i.e. player wants character to jump)
-     * If positive, Checks to see if character is on a block
-     * If on a block, goes into timed loop causing character to move upwards temporarily
-     * else verticalVelocity is negative, gravity stays into being
-     * @param delta The amount of time that has passed in milliseconds since last update
-     */
-    public void verticalMove(long delta) {
-        if (this.verticalVelocity > 0) {
-            if (this.onBlock) {
-                initialJump = System.currentTimeMillis();
-                while (System.currentTimeMillis() - this.initialJump < jumpTime) {
-                    this.y += (delta * this.verticalVelocity) / 1000;
-                }
-                this.verticalVelocity = -this.verticalVelocity;
-                this.y += (delta * this.verticalVelocity) / 1000;
-            }
-        }
-        else {
-            this.y += (delta * this.verticalVelocity) /1000;
+
+    public void jump(boolean canJump) {
+        if (canJump) {
+
+            this.setVelocityY(5);
+            this.setJumpTime(this.maxJumpTime);
         }
     }
-/**
- public void tryToFire() {
- // check that we have waiting long enough to fire
- if (System.currentTimeMillis() - lastShot < shotCoolDown) {
- return;
- }
 
- // if we waited long enough, create the friendly shot, and record the time.
- lastShot = System.currentTimeMillis();
- FriendlyBullet shot = new FriendlyBullet(this,"sprites/shot.gif",this.getX()+10,this.getY()-30);
- Environmnent.add(shot);
- }
- }
- */
-
+    public Bullet shoot() {
+        Point leftCorner = this.getLocation();
+        int x = leftCorner.x;
+        int y = leftCorner.y;
+        Point dim = this.getDimensions();
+        int h = dim.y;
+        int w = dim.x;
+        h = h/2;
+        w = w/2;
+        Point vel = new Point(5,0)
+        Point center = new Point(x + w,y - h);
+        Bullet shot = new Bullet(center, this.getStrength(), vel );
+        return shot;
+    }
 }
