@@ -17,6 +17,12 @@ public class Environment {
     private Record goal;
     private int i;
     private boolean iterationFlag;
+    private static final int GRAVITY = 5;
+
+    // creating an empty level for level 1 and a test character
+    Level l1 = new Level(new ArrayList<Block>(), new ArrayList<Record>(), new Record(new Point(0,0), false), new Point(0,0));
+    Character player = new Character(new Point(20, 20), 3, 5, 3, 5);
+
 
     public Environment() {
         blocks = new ArrayList<Block>();
@@ -135,6 +141,10 @@ public class Environment {
                 break;
             }
         }
+        // if the character isn't jumping and isn't standing on a block, start him falling.
+        if (!onBlock(c) && c.getJumpTime() == 0){
+            c.getVelocity().offset(0, GRAVITY);
+        }
 
         c.setLocation(tempLoc);   // set the character's new location
     }
@@ -210,6 +220,21 @@ public class Environment {
         }
         return true;
 
+    }
+
+    public boolean onBlock(Character c){
+        Point tempLoc = new Point(c.getLocation());
+        tempLoc.offset(0, -GRAVITY); // suppose the character falls
+        // Iterate through all blocks, seeing if this movement would cause c to intersect the block
+        for (i = 0; i < this.getBlocks().size(); ++i) {
+            Block tempBlock = this.getBlocks().get(i);
+            // if one of the blocks WOULD intersect, return true
+            if (boxIntersect(tempLoc, c.getDimensions(), tempBlock.getLocation(), tempBlock.getDimensions())) {
+                return true;
+            }
+        }
+        // if c wouldn't intersect a block, return false.
+        return false;
     }
 
 }
