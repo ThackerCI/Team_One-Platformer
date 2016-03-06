@@ -1,13 +1,44 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="bottom"
+    android:orientation="horizontal"
     tools:context="com.test.platformer.Controls">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <Button
+        android:id="@+id/left_button"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_alignParentLeft="true"
+        android:text="L"
+        android:textSize="50sp" />
 
-</FrameLayout>
+    <Button
+        android:id="@+id/right_button"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/left_button"
+        android:text="R"
+        android:textSize="50sp" />
+
+    <Button
+        android:id="@+id/jump_button"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_alignParentRight="true"
+        android:text="^"
+        android:textSize="60sp" />
+
+    <Button
+        android:id="@+id/shoot_button"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginRight="10dp"
+        android:layout_toLeftOf="@id/jump_button"
+        android:text="X"
+        android:textSize="50sp" />
+
+
+</RelativeLayout>
