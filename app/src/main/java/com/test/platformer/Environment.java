@@ -24,6 +24,7 @@ public class Environment {
     private int i;
     private boolean iterationFlag;
     public static final int GRAVITY = 3;
+    private final Point blockDimensions = new Point(30,30);
 
 
     // creating an empty level for level 1 and a test character
@@ -39,7 +40,7 @@ public class Environment {
 
     public Level levelOne() {
         List<Block> blocks1 = blocksOne();
-        Record goal1 = new Record(new Point(240, 30), false);
+        Record goal1 = new Record(new Point(8, 1), false);
         Point starting1 = new Point(120, 60);
 
         return new Level(blocks1, new ArrayList<Record>(), goal1, starting1);
@@ -47,15 +48,21 @@ public class Environment {
 
     public ArrayList<Block> blocksOne() {
         ArrayList<Block> blocks1 = new ArrayList<Block>();
-        blocks1.add(new Block(new Point(0, 0), new Point(30, 30)));
-        blocks1.add(new Block(new Point(30, 0), new Point(30, 30)));
-        blocks1.add(new Block(new Point(30, 30), new Point(30, 30)));
-        blocks1.add(new Block(new Point(60, 30), new Point(30, 30)));
-        blocks1.add(new Block(new Point(60, 60), new Point(30, 30)));
-        blocks1.add(new Block(new Point(60, 90), new Point(30, 30)));
-        blocks1.add(new Block(new Point(60, 120), new Point(30, 30)));
-        blocks1.add(new Block(new Point(90, 120), new Point(30, 30)));
-        blocks1.add(new Block(new Point(120, 120), new Point(30, 30)));
+        blocks1.add(new Block(new Point(1, 0), blockDimensions));
+        blocks1.add(new Block(new Point(1, 1), blockDimensions));
+        blocks1.add(new Block(new Point(2, 1), blockDimensions));
+        blocks1.add(new Block(new Point(2, 2), blockDimensions));
+        blocks1.add(new Block(new Point(2, 3), blockDimensions));
+        blocks1.add(new Block(new Point(2, 4), blockDimensions));
+        blocks1.add(new Block(new Point(3, 4), blockDimensions));
+        blocks1.add(new Block(new Point(0, 0), blockDimensions));
+        blocks1.add(new Block(new Point(4, 4), blockDimensions));
+        blocks1.add(new Block(new Point(5, 4), blockDimensions));
+        blocks1.add(new Block(new Point(6, 4), blockDimensions));
+        blocks1.add(new Block(new Point(7, 4), blockDimensions));
+        blocks1.add(new Block(new Point(6, 3), blockDimensions));
+        blocks1.add(new Block(new Point(7, 3), blockDimensions));
+        blocks1.add(new Block(new Point(7, 2), blockDimensions));
         return blocks1;
     }
 
@@ -88,10 +95,6 @@ public class Environment {
         return iterationFlag;
     }
 
-    private void endLevel(int k) {
-        // FIXME: Return to the main menu activity
-    }
-
     private void updateBullets(LevelActivity levelActivity) {
         for (i = 0; i < this.bullets.size(); ++i) {                 // iterate through all bullets
             iterationFlag = false;                                  // reset the flag
@@ -102,8 +105,9 @@ public class Environment {
             if (tempBullet.getTimeRemaining() == 0) {                // if the bullet has expired
 //                levelActivity.removeView(tempBullet.getBulletView());
 //                levelLayout.removeView(tempBullet.getBulletView());
-                this.bullets.remove(i);                             // delete the bullet
-                --i;                                                // subtract from i since an element has been removed
+//                this.bullets.remove(i);                             // delete the bullet
+//                --i;                                                // subtract from i since an element has been removed
+                tempBullet.setFlag(true);
                 iterationFlag = true;                               // keep the now nonexistent bullet from moving
                 break;                                              // no need to check the other blocks
             } else {
@@ -113,8 +117,10 @@ public class Environment {
                         // hitting a block
 //                        levelActivity.removeView(tempBullet.getBulletView());
 //                        levelLayout.removeView(tempBullet.getBulletView());
-                        this.bullets.remove(i);                         // delete the bullet
-                        --i;                                            // subtract from i since an element has been removed
+//                        this.bullets.remove(i);                         // delete the bullet
+//                        --i;                                            // subtract from i since an element has been removed
+
+                        tempBullet.setFlag(true);
                         iterationFlag = true;                           // keep the now nonexistent bullet from moving
                         break;                                          // no need to check the other blocks
                     }
@@ -128,7 +134,6 @@ public class Environment {
         }
         iterationFlag = false;                                     // Reset the flag for later use
     }
-
 
     // Currently, updateRecords(c) throws the iteration flag if c is intersecting the goal record.
     private void updateRecords(Character c) {
@@ -209,7 +214,6 @@ public class Environment {
         return this.blocks;
     }
 
-
     // boxIntersect(L1, S1, L2, S2) returns true if the box anchored at point L1 with dimensions S1 and the box
     // anchored at point L2 with dimensions S2 overlap. (i.e. if one of the former box's corners is in the latter box,
     // or if all of the latter box's corners are in the former.)
@@ -233,5 +237,4 @@ public class Environment {
         // if c wouldn't intersect a block, return false.
         return false;
     }
-
 }

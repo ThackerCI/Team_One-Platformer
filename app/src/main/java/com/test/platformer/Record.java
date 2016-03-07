@@ -20,6 +20,8 @@ public class Record {
 
     public Record(Point p, boolean c) {
         location = p;
+        p.x *= 30;
+        p.y *= 30;
         collected = c;
     }
 

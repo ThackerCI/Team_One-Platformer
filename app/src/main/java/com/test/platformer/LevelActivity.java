@@ -1,5 +1,6 @@
 package com.test.platformer;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,7 +21,7 @@ public class LevelActivity extends AppCompatActivity implements Controls.control
     Environment environment = new Environment();
     boolean started = false;
     boolean running = false;
-
+    int savedLevelInfo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +34,14 @@ public class LevelActivity extends AppCompatActivity implements Controls.control
         // get the bundle of saved stuff
         Bundle savedStuff = getIntent().getExtras();
         // get the level and character info from the bundle
-        int savedLevelInfo = (int) savedStuff.getSerializable("levelID");
+        savedLevelInfo = (int) savedStuff.getSerializable("levelID");
+
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         if (savedLevelInfo == 1) {
             initLevel(savedLevelInfo);
         }
@@ -41,19 +49,32 @@ public class LevelActivity extends AppCompatActivity implements Controls.control
         TimerTask refresh = new TimerTask() {
             @Override
             public void run() {
-                environment.update(Environment.player, LevelActivity.this); //(RelativeLayout) findViewById(R.id.level_layout));
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        updateCharacterView();
-                        updateBulletsView();
-                    }
-                });
+                // run the update function. If the player hasn't reached the goal, update the views
+                if(!environment.update(Environment.player, LevelActivity.this)) { //(RelativeLayout) findViewById(R.id.level_layout));
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            updateCharacterView();
+                            updateBulletsView();
+                        }
+                    });
+                } // else, return to the main menu
+                else {
+                    Intent mainIntent = new Intent(LevelActivity.this, MainActivity.class);
+                    startActivity(mainIntent);  // go to MainActivity with intent mainIntent
+                }
             }
         };
         // set refresh rate to once every 1/30th second, starting .5 seconds after creation.
         gameLoopTimer.schedule(refresh, 500, 100);
+    }
 
+
+    // set the cancel
+    @Override
+    protected void onStop() {
+        super.onStop();
+        gameLoopTimer.cancel();
     }
 
     public void initLevel(int i) {
@@ -109,12 +130,20 @@ public class LevelActivity extends AppCompatActivity implements Controls.control
                 flag = true;
                 imageView = new ImageView(LevelActivity.this); // create a new ImageView
                 tempBullet.setBulletView(imageView); // used for deleting said view on bullet despawn
+                imageView.setImageResource(R.drawable.block);          // set the "bullet" sprite to it
             } else {
                 imageView = (ImageView) tempBullet.getBulletView();
             }
-            imageView.setImageResource(R.drawable.block);          // set the "bullet" sprite to it
             // get the level layout
             RelativeLayout RL = (RelativeLayout) findViewById(R.id.level_layout);
+            // if the bullet is flagged for removal
+            if (tempBullet.getFlag()){
+                // destroy its view and remove it from the bullet list
+                imageView.setVisibility(View.INVISIBLE);
+                environment.getBullets().remove(i);
+                --i;
+                continue;
+            }
             // get the dimensions for the sprite and convert them for the device's screen
             int dimX = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                     tempBullet.getDimensions().x, getResources().getDisplayMetrics());

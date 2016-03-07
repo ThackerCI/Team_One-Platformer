@@ -11,8 +11,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    Character player;
-    Level l1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +24,8 @@ public class MainActivity extends AppCompatActivity {
     public void start(View view) {
         int levelID = 1;
 
-        Intent levelIntent = new Intent(MainActivity.this, LevelActivity.class); //context = currentactivity.this // next, destination.class
-        levelIntent.putExtra("levelID", levelID); // arbitrary name, object to be saved
-        startActivity(levelIntent);  // go to BActivity with intent bIntent
+        Intent levelIntent = new Intent(MainActivity.this, LevelActivity.class);
+        levelIntent.putExtra("levelID", levelID); // put the level ID in the intent
+        startActivity(levelIntent);  // go to levelActivity with intent levelIntent
     }
 }

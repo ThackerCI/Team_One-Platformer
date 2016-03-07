@@ -55,7 +55,7 @@ public class Character {
      */
     public Character(Point location, Point dimensions, int strength,
                      int speed, int defense, int maxHealth) {
-        this.location = new Point(location);
+        this.location = new Point(location.x * 30, location.y * 30);
         this.dimensions = new Point(dimensions);
         this.setStrength(strength);
         this.setSpeed(speed);
