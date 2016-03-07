@@ -1,20 +1,33 @@
 package com.test.platformer;
 
-import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Point;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.View;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
+    Character player;
+    Level l1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // remove title bar
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        // fullscreen
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(R.layout.activity_main);
 
+
+    }
+
+
+    public void start(View view) {
+        int levelID = 1;
+
+        Intent levelIntent = new Intent(MainActivity.this, LevelActivity.class); //context = currentactivity.this // next, destination.class
+        levelIntent.putExtra("levelID", levelID); // arbitrary name, object to be saved
+        startActivity(levelIntent);  // go to BActivity with intent bIntent
     }
 }
