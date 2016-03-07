@@ -10,7 +10,6 @@ package com.test.platformer;
  */
 
 import android.graphics.Point;
-import android.util.Log;
 
 public class Character {
 
@@ -197,7 +196,7 @@ public class Character {
     /**
      * Request that the character move itself based on a certain amount
      * of time passing. This will also account for jump.
-     * <p/>
+     * <p>
      * * @param delta The amount of time that has passed in milliseconds
      */
     public void horizontalMove(int direction) {

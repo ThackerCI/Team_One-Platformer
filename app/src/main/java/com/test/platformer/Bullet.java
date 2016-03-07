@@ -20,6 +20,7 @@ public class Bullet {
     private final int duration = 20;
     //constant dimensions for bullet. May be changed later
     private final Point dimensions = new Point(3, 3);
+
     //default constructor. Will include
     //  package from player class that will
     //      make default bullet come from the players 

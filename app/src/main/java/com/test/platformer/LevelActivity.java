@@ -1,16 +1,15 @@
 package com.test.platformer;
 
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-
-import org.w3c.dom.Text;
+import android.widget.TextView;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -22,6 +21,8 @@ public class LevelActivity extends AppCompatActivity implements Controls.control
     boolean started = false;
     boolean running = false;
     int savedLevelInfo;
+    final int FRAME_DURATION = 33;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,22 +51,47 @@ public class LevelActivity extends AppCompatActivity implements Controls.control
             @Override
             public void run() {
                 // run the update function. If the player hasn't reached the goal, update the views
-                if(!environment.update(Environment.player, LevelActivity.this)) { //(RelativeLayout) findViewById(R.id.level_layout));
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            updateCharacterView();
-                            updateBulletsView();
-                        }
-                    });
-                } // else, return to the main menu
-                else {
-                    LevelActivity.this.finish();
+                if (running) {
+                    if (!environment.update(Environment.player, LevelActivity.this)) { //(RelativeLayout) findViewById(R.id.level_layout));
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                updateCharacterView();
+                                updateBulletsView();
+                            }
+                        });
+                    } // else, return to the main menu
+                    else {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                displayEndscreen();
+
+                            }
+                        });
+                    }
                 }
             }
         };
         // set refresh rate to once every 1/30th second, starting .5 seconds after creation.
-        gameLoopTimer.schedule(refresh, 500, 100);
+        gameLoopTimer.schedule(refresh, 500, FRAME_DURATION);
+    }
+
+    public void displayEndscreen() {
+        running = false;
+        TextView textView = (TextView) findViewById(R.id.congrats_text);
+        textView.setVisibility(View.VISIBLE);
+        textView.bringToFront();
+        Button button = (Button) findViewById(R.id.return_button);
+        button.setVisibility(View.VISIBLE);
+        button.setClickable(true);
+        button.bringToFront();
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LevelActivity.this.finish();
+            }
+        });
     }
 
 
@@ -136,7 +162,7 @@ public class LevelActivity extends AppCompatActivity implements Controls.control
             // get the level layout
             RelativeLayout RL = (RelativeLayout) findViewById(R.id.level_layout);
             // if the bullet is flagged for removal
-            if (tempBullet.getFlag()){
+            if (tempBullet.getFlag()) {
                 // destroy its view and remove it from the bullet list
                 imageView.setVisibility(View.INVISIBLE);
                 environment.getBullets().remove(i);

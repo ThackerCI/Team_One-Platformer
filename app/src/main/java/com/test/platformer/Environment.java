@@ -4,13 +4,8 @@ package com.test.platformer;
  * Created by Isaiah on 2/28/2016.
  */
 
-import android.app.Activity;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +19,7 @@ public class Environment {
     private int i;
     private boolean iterationFlag;
     public static final int GRAVITY = 3;
-    private final Point blockDimensions = new Point(30,30);
+    private final Point blockDimensions = new Point(30, 30);
 
 
     // creating an empty level for level 1 and a test character

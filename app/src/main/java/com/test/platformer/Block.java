@@ -22,7 +22,7 @@ public class Block {
 
     //overloaded constructor
     public Block(Point nLocation, Point nDimension) {
-        location = new Point(nLocation.x*30, nLocation.y*30);
+        location = new Point(nLocation.x * 30, nLocation.y * 30);
         dimensions = new Point(nDimension);
     }
 

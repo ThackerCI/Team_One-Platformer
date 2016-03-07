@@ -15,12 +15,36 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="3">
+
         <ImageView
+            android:id="@+id/character_sprite"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:id="@+id/character_sprite"
-            android:src="@drawable/character"/>
-        
+            android:src="@drawable/character" />
+
+        <Button
+            android:id="@+id/return_button"
+            android:layout_width="200dp"
+            android:layout_height="80dp"
+            android:layout_centerInParent="true"
+            android:background="@android:color/holo_blue_light"
+            android:clickable="false"
+            android:text="Return to Menu"
+            android:textSize="20sp"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/congrats_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/return_button"
+            android:layout_centerHorizontal="true"
+            android:background="@android:color/background_light"
+            android:text="Level Complete!"
+            android:textAllCaps="true"
+            android:textSize="30sp"
+            android:visibility="invisible" />
+
     </RelativeLayout>
 
     <fragment

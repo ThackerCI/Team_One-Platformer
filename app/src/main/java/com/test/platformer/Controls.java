@@ -50,16 +50,24 @@ public class Controls extends Fragment {
                 return true;
             }
         });
-        jumpButton.setOnClickListener(new View.OnClickListener() {
+
+        jumpButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                levelActivity.jump();
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    levelActivity.jump();
+                }
+                return true;
             }
         });
-        shootButton.setOnClickListener(new View.OnClickListener() {
+
+        shootButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                levelActivity.shoot();
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    levelActivity.shoot();
+                }
+                return true;
             }
         });
 
