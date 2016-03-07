@@ -203,6 +203,7 @@ public class Character {
     public void horizontalMove(int direction) {
         //update the location of the entity based on move speeds
         this.setVelocityX(direction * this.getSpeed());
+        this.setDirection(direction);
     }
 
 
@@ -223,8 +224,8 @@ public class Character {
         int w = dim.x;
         h = h / 2;
         w = w / 2;
-        Point vel = new Point(5, 0);
-        Point center = new Point(x + w, y - h);
+        Point vel = new Point(this.direction * 5, 0);
+        Point center = new Point(x + w, y + h);
         return new Bullet(center, this.getStrength(), vel);
     }
 }

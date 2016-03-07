@@ -4,16 +4,19 @@ package com.test.platformer;
  * Created by Isaiah on 2/28/2016.
  */
 
+import android.app.Activity;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Environment {
 
+public class Environment {
     private List<Block> blocks;
     private List<Record> records;
     private List<Bullet> bullets;
@@ -24,7 +27,7 @@ public class Environment {
 
 
     // creating an empty level for level 1 and a test character
-    public static Character player = new Character(new Point(0, 0), new Point(30,30), 3, 3, 3, 5);
+    public static Character player = new Character(new Point(0, 0), new Point(30, 30), 3, 3, 3, 5);
 
 
     public Environment() {
@@ -34,25 +37,25 @@ public class Environment {
         //goal = new GoalRecord();
     }
 
-    public Level levelOne(){
+    public Level levelOne() {
         List<Block> blocks1 = blocksOne();
         Record goal1 = new Record(new Point(240, 30), false);
-        Point starting1 = new Point(120,60);
+        Point starting1 = new Point(120, 60);
 
         return new Level(blocks1, new ArrayList<Record>(), goal1, starting1);
     }
 
-    public ArrayList<Block> blocksOne(){
+    public ArrayList<Block> blocksOne() {
         ArrayList<Block> blocks1 = new ArrayList<Block>();
-        blocks1.add(new Block(new Point(0,0), new Point(30,30)));
-        blocks1.add(new Block(new Point(30,0), new Point(30,30)));
-        blocks1.add(new Block(new Point(30,30), new Point(30,30)));
-        blocks1.add(new Block(new Point(60,30), new Point(30,30)));
-        blocks1.add(new Block(new Point(60,60), new Point(30,30)));
-        blocks1.add(new Block(new Point(60,90), new Point(30,30)));
-        blocks1.add(new Block(new Point(60,120), new Point(30,30)));
-        blocks1.add(new Block(new Point(90,120), new Point(30,30)));
-        blocks1.add(new Block(new Point(120,120), new Point(30,30)));
+        blocks1.add(new Block(new Point(0, 0), new Point(30, 30)));
+        blocks1.add(new Block(new Point(30, 0), new Point(30, 30)));
+        blocks1.add(new Block(new Point(30, 30), new Point(30, 30)));
+        blocks1.add(new Block(new Point(60, 30), new Point(30, 30)));
+        blocks1.add(new Block(new Point(60, 60), new Point(30, 30)));
+        blocks1.add(new Block(new Point(60, 90), new Point(30, 30)));
+        blocks1.add(new Block(new Point(60, 120), new Point(30, 30)));
+        blocks1.add(new Block(new Point(90, 120), new Point(30, 30)));
+        blocks1.add(new Block(new Point(120, 120), new Point(30, 30)));
         return blocks1;
     }
 
@@ -78,8 +81,8 @@ public class Environment {
 
     // update(c) calls updateBullets(), updateCharacter(c), and updateRecords(c), then calls endLevel(1) if the
     // iteration flag is thrown.
-    public boolean update(Character c) {
-        updateBullets();
+    public boolean update(Character c, LevelActivity levelLayout) {
+        updateBullets(levelLayout);
         updateCharacter(c);
         updateRecords(c);
         return iterationFlag;
@@ -89,24 +92,37 @@ public class Environment {
         // FIXME: Return to the main menu activity
     }
 
-    private void updateBullets() {
+    private void updateBullets(LevelActivity levelActivity) {
         for (i = 0; i < this.bullets.size(); ++i) {                 // iterate through all bullets
-            iterationFlag = false;                                   // reset the flag
-            Point tempLoc = new Point(this.bullets.get(i).getLocation());    // get the bullet's current location
-            Point tempDims = new Point(this.bullets.get(i).getDimensions()); // get the bullet's dimensions
+            iterationFlag = false;                                  // reset the flag
+            Bullet tempBullet = this.bullets.get(i);
+            Point tempLoc = new Point(tempBullet.getLocation());    // get the bullet's current location
+            Point tempDims = new Point(tempBullet.getDimensions()); // get the bullet's dimensions
             int j;
-            for (j = 0; j < this.blocks.size(); ++j) {                // iterate through the environment's blocks
-                Block curBlock = this.blocks.get(j);                   // get the current block
-                if (boxIntersect(tempLoc, tempDims, curBlock.getLocation(), curBlock.getDimensions())) {// if this bullet is
-                    // hitting a block
-                    this.bullets.remove(i);                              // delete the bullet
-                    --i;                                                 // subtract from i since an element has been removed
-                    iterationFlag = true;                                // keep the now nonexistent bullet from moving
-                    break;                                               // no need to check the other blocks
+            if (tempBullet.getTimeRemaining() == 0) {                // if the bullet has expired
+//                levelActivity.removeView(tempBullet.getBulletView());
+//                levelLayout.removeView(tempBullet.getBulletView());
+                this.bullets.remove(i);                             // delete the bullet
+                --i;                                                // subtract from i since an element has been removed
+                iterationFlag = true;                               // keep the now nonexistent bullet from moving
+                break;                                              // no need to check the other blocks
+            } else {
+                for (j = 0; j < this.blocks.size(); ++j) {              // iterate through the environment's blocks
+                    Block curBlock = this.blocks.get(j);                // get the current block
+                    if (boxIntersect(tempLoc, tempDims, curBlock.getLocation(), curBlock.getDimensions())) {// if this bullet is
+                        // hitting a block
+//                        levelActivity.removeView(tempBullet.getBulletView());
+//                        levelLayout.removeView(tempBullet.getBulletView());
+                        this.bullets.remove(i);                         // delete the bullet
+                        --i;                                            // subtract from i since an element has been removed
+                        iterationFlag = true;                           // keep the now nonexistent bullet from moving
+                        break;                                          // no need to check the other blocks
+                    }
                 }
             }
             if (!iterationFlag) {                                     // if the bullet wasn't removed
                 tempLoc.offset(this.bullets.get(i).getVelocity().x, this.bullets.get(i).getVelocity().y);   // add the bullet's velocity to the temp
+                this.bullets.get(i).setTimeRemaining(this.bullets.get(i).getTimeRemaining() - 1); // decrement time remaining
                 this.bullets.get(i).setLocation(tempLoc); // set the bullet's location to the temp
             }
         }
@@ -166,7 +182,7 @@ public class Environment {
         if (!onBlock(c) && c.getJumpTime() == 0) {
             c.setVelocityY(GRAVITY);
         }
-        if (c.getJumpTime() > 0){
+        if (c.getJumpTime() > 0) {
             c.setJumpTime(c.getJumpTime() - 1);
         }
 
@@ -198,8 +214,8 @@ public class Environment {
     // anchored at point L2 with dimensions S2 overlap. (i.e. if one of the former box's corners is in the latter box,
     // or if all of the latter box's corners are in the former.)
     public static boolean boxIntersect(Point L1, Point S1, Point L2, Point S2) {
-        Rect r1 = new Rect(L1.x, L1.y, L1.x+S1.x-1, L1.y+S1.y-1);
-        Rect r2 = new Rect(L2.x, L2.y, L2.x+S2.x-1, L2.y+S2.y-1);
+        Rect r1 = new Rect(L1.x, L1.y, L1.x + S1.x - 1, L1.y + S1.y - 1);
+        Rect r2 = new Rect(L2.x, L2.y, L2.x + S2.x - 1, L2.y + S2.y - 1);
         return r1.intersect(r2);
     }
 

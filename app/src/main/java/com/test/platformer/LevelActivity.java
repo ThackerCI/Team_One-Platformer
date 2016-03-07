@@ -1,17 +1,13 @@
 package com.test.platformer;
 
 import android.content.pm.ActivityInfo;
-import android.graphics.Point;
-import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
-import android.view.Window;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
@@ -45,11 +41,12 @@ public class LevelActivity extends AppCompatActivity implements Controls.control
         TimerTask refresh = new TimerTask() {
             @Override
             public void run() {
-                environment.update(Environment.player);
+                environment.update(Environment.player, LevelActivity.this); //(RelativeLayout) findViewById(R.id.level_layout));
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         updateCharacterView();
+                        updateBulletsView();
                     }
                 });
             }
@@ -102,6 +99,45 @@ public class LevelActivity extends AppCompatActivity implements Controls.control
         }
     }
 
+    public void updateBulletsView() {
+        // iterate through the blocks in the environment
+        for (int i = 0; i < environment.getBullets().size(); ++i) {
+            boolean flag = false;
+            ImageView imageView;
+            Bullet tempBullet = environment.getBullets().get(i); // get the current block
+            if (tempBullet.getBulletView() == null) {
+                flag = true;
+                imageView = new ImageView(LevelActivity.this); // create a new ImageView
+                tempBullet.setBulletView(imageView); // used for deleting said view on bullet despawn
+            } else {
+                imageView = (ImageView) tempBullet.getBulletView();
+            }
+            imageView.setImageResource(R.drawable.block);          // set the "bullet" sprite to it
+            // get the level layout
+            RelativeLayout RL = (RelativeLayout) findViewById(R.id.level_layout);
+            // get the dimensions for the sprite and convert them for the device's screen
+            int dimX = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                    tempBullet.getDimensions().x, getResources().getDisplayMetrics());
+            int dimY = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                    tempBullet.getDimensions().y, getResources().getDisplayMetrics());
+            // create new layout parameters for the sprite
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(dimX, dimY);
+            // get the location of the block and convert the coordinates for the device's screen
+            int newX = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                    tempBullet.getLocation().x, getResources().getDisplayMetrics());
+            int newY = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                    tempBullet.getLocation().y, getResources().getDisplayMetrics());
+            // set the margins for the ImageView (i.e. position on the screen)
+            layoutParams.setMargins(newX, newY, 0, 0);
+            // add the ImageView to the layout, or update it if it's already there.
+            if (flag) {
+                RL.addView(imageView, layoutParams);
+            } else {
+                imageView.setLayoutParams(layoutParams);
+            }
+        }
+    }
+
     public void initRecordsView() {
         // TODO: add loop for additional records. Currently just doing the goal, since that's all
         // we have.
@@ -145,22 +181,26 @@ public class LevelActivity extends AppCompatActivity implements Controls.control
         imageView.setLayoutParams(layoutParams);
     }
 
-    public void move(int d){
+    public void move(int d) {
         // make the character move in direction d.
         Environment.player.horizontalMove(d);
     }
 
-    public void jump(){
+    public void jump() {
         // make the player jump if possible.
         Environment.player.jump(environment.onBlock(Environment.player));
     }
 
-    public void shoot(){
-        Environment.player.shoot();
+    public void shoot() {
+        environment.getBullets().add(Environment.player.shoot());
     }
 
-    public void stopCharacter(){
+    public void stopCharacter() {
         Environment.player.setVelocityX(0);
+    }
+
+    public void removeView(View view) {
+        view.setVisibility(View.INVISIBLE);
     }
 
 

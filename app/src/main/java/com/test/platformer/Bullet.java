@@ -5,18 +5,20 @@ package com.test.platformer;/*
  */
 
 import android.graphics.Point;
+import android.view.View;
 
 /**
  * @author Aaron Trusty
  */
 public class Bullet {
+    private View bulletView;
     private Point location;
     private int power;
     private Point velocity;
     private int timeRemaining;
     private final int duration = 20;
     //constant dimensions for bullet. May be changed later
-    private final Point dimensions = new Point(12, 12);
+    private final Point dimensions = new Point(3, 3);
 
     //default constructor. Will include
     //  package from player class that will
@@ -38,11 +40,19 @@ public class Bullet {
         timeRemaining = duration;
     }
 
-    public Bullet(Bullet b){
+    public Bullet(Bullet b) {
         location = new Point(b.getLocation());
         power = b.getPower();
         velocity = new Point(b.getVelocity());
         timeRemaining = b.getTimeRemaining();
+    }
+
+    public View getBulletView() {
+        return bulletView;
+    }
+
+    public void setBulletView(View bulletView) {
+        this.bulletView = bulletView;
     }
 
     public int getTimeRemaining() {
@@ -87,27 +97,10 @@ public class Bullet {
         return dimensions;
     }
 
-//    //update x for one unit
-//    public void shoot() {
-//        Boolean notTangent = true;
-//        while (notTangent) {
-//            setXCoord(xCoord + 1); //update position of bullet (only x)
-//            if (true) //replace true with list of positions of
-//            {        //enemies on screen and if x&y coord of bullet
-//                //are tangent then set notTangent to false. test for collision
-//                notTangent = false;
-//            }
-//        }
-//    }
 
     //toString for class
     public String toString() {
         return "The bullet is currently at position (" + location.x + "," + location.y + ").\n";
-    }
-
-    //this method is in the UML under this class but it needs to be inlevel class
-    public void despawn() {
-
     }
 
 
