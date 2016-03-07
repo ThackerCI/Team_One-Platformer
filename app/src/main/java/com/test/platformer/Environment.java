@@ -20,11 +20,11 @@ public class Environment {
     private Record goal;
     private int i;
     private boolean iterationFlag;
-    private static final int GRAVITY = 1;
+    public static final int GRAVITY = 3;
 
 
     // creating an empty level for level 1 and a test character
-    public static Character player = new Character(new Point(0, 0), new Point(30,30), 3, 5, 3, 5);
+    public static Character player = new Character(new Point(0, 0), new Point(30,30), 3, 3, 3, 5);
 
 
     public Environment() {
@@ -71,8 +71,8 @@ public class Environment {
         bullets.clear();                             // remove all bullets from this list
         goal = l.getGoal();                          // set the goal record
         Point tempPoint = new Point(l.getStartingPoint().x, l.getStartingPoint().y);
+        c.reset();                                   // initialize the character's stats
         c.setLocation(tempPoint);                    // initialize the player's starting point
-        // FIXME: UNCOMMENT WHEN FUNCTION c.reset();                                   // initialize the character's stats
     }
 
 
@@ -162,12 +162,9 @@ public class Environment {
                 break;
             }
         }
-        if (onBlock(c)){
-            c.setJumpTime(0);
-        }
         // if the character isn't jumping and isn't standing on a block, start him falling.
         if (!onBlock(c) && c.getJumpTime() == 0) {
-            c.getVelocity().offset(0, GRAVITY);
+            c.setVelocityY(GRAVITY);
         }
         if (c.getJumpTime() > 0){
             c.setJumpTime(c.getJumpTime() - 1);
@@ -208,7 +205,7 @@ public class Environment {
 
     public boolean onBlock(Character c) {
         Point tempLoc = new Point(c.getLocation());
-        tempLoc.offset(0, -GRAVITY); // suppose the character falls
+        tempLoc.offset(0, GRAVITY); // suppose the character falls
         // Iterate through all blocks, seeing if this movement would cause c to intersect the block
         for (i = 0; i < this.getBlocks().size(); ++i) {
             Block tempBlock = this.getBlocks().get(i);

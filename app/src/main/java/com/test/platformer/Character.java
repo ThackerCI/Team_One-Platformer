@@ -10,6 +10,7 @@ package com.test.platformer;
  */
 
 import android.graphics.Point;
+import android.util.Log;
 
 public class Character {
 
@@ -24,7 +25,7 @@ public class Character {
     //Time character will be moving vertically in case of jump
     private int jumpTime;
     //maximum time the character will move vertically in case of jump
-    private final int maxJumpTime = 10;
+    private final int maxJumpTime = 24;
     // direction is -1 for left, 1 for right
     private int direction;
     //dimensions of the character
@@ -61,12 +62,14 @@ public class Character {
         this.setDefense(defense);
         this.setMaxHealth(maxHealth);
         this.setVelocity(new Point(0, 0));
+        this.jumpTime = 0;
     }
 
     /**
      * Resets Character's health and velocity
      */
     public void reset() {
+        this.jumpTime = 0;
         this.setHealth(this.getMaxHealth());
         this.setDirection(1);
         this.setVelocity(new Point(0, 0));
@@ -206,7 +209,7 @@ public class Character {
     public void jump(boolean canJump) {
         if (canJump) {
 
-            this.setVelocityY(-1);
+            this.setVelocityY(-Environment.GRAVITY);
             this.setJumpTime(this.maxJumpTime);
         }
     }
