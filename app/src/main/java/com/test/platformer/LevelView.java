@@ -1,14 +1,19 @@
 package com.test.platformer;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 
 public class LevelView extends Fragment {
+    Environment environment;
+    boolean started = false;
+    boolean running = false;
 
     public LevelView() {
     }
@@ -16,8 +21,25 @@ public class LevelView extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Environment environment = new Environment();
+        environment = new Environment();
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_level_view, container, false);
+    }
+
+    public void initLevel(int i){
+        environment.initialize(environment.l1, environment.player);
+        started = true;
+        initView();
+        running = true;
+    }
+
+    public void initView() {
+        for (int i = 0; i < environment.getBlocks().size(); ++i) {
+//            ImageView imageView = new ImageView(LevelActivity.this);
+//            imageView.setImageResource(R.drawable.block);
+//            RelativeLayout r1 = (RelativeLayout) findViewById
+
+        }
+
     }
 }

@@ -5,6 +5,8 @@ package com.test.platformer;
  */
 
 import android.graphics.Point;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +21,10 @@ public class Environment {
     private boolean iterationFlag;
     private static final int GRAVITY = 5;
 
+
     // creating an empty level for level 1 and a test character
-    Level l1 = new Level(new ArrayList<Block>(), new ArrayList<Record>(), new Record(new Point(0,0), false), new Point(0,0));
+    List<Block> blocks1 = new ArrayList<Block>();
+    Level l1;
     Character player = new Character(new Point(20, 20), 3, 5, 3, 5);
 
 
@@ -28,8 +32,15 @@ public class Environment {
         blocks = new ArrayList<Block>();
         records = new ArrayList<Record>();
         bullets = new ArrayList<Bullet>();
+        Block b1 = new Block(new Point(15,15), new Point(30,30));
+        Block b2 = new Block(new Point(45,15), new Point(30,30));
+        blocks1.add(b1);
+        blocks1.add(b2);
+        l1 = new Level(blocks1, new ArrayList<Record>(), new Record(new Point(0, 0), false), new Point(0, 0));
         //goal = new GoalRecord();
     }
+
+
 
     // addBullet(b) adds bullet b to the current environment.
     public void addBullet(Bullet b) {
@@ -142,7 +153,7 @@ public class Environment {
             }
         }
         // if the character isn't jumping and isn't standing on a block, start him falling.
-        if (!onBlock(c) && c.getJumpTime() == 0){
+        if (!onBlock(c) && c.getJumpTime() == 0) {
             c.getVelocity().offset(0, GRAVITY);
         }
 
@@ -222,7 +233,7 @@ public class Environment {
 
     }
 
-    public boolean onBlock(Character c){
+    public boolean onBlock(Character c) {
         Point tempLoc = new Point(c.getLocation());
         tempLoc.offset(0, -GRAVITY); // suppose the character falls
         // Iterate through all blocks, seeing if this movement would cause c to intersect the block
