@@ -1,8 +1,4 @@
-package com.test.platformer;/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+package com.test.platformer;
 
 import android.graphics.Point;
 import android.view.View;
@@ -10,15 +6,23 @@ import android.view.View;
 /**
  * @author Aaron Trusty
  */
+// last edited: 03/07/16
 public class Bullet {
+    // the ImageView associated with the bullet
     private View bulletView;
+    // the bullet's location
     private Point location;
+    // how much base damage the bullet deals
     private int power;
+    // x and y coordinates of bullet's velocity, specified as a point
     private Point velocity;
+    // time remaining before auto-despawn
     private int timeRemaining;
+    // is the bullet flagged for removal? default: false
     private boolean flag = false;
-    private final int duration = 20;
-    //constant dimensions for bullet. May be changed later
+    // constant duration for the bullet
+    private final int duration = 50;
+    //constant dimensions for bullet.
     private final Point dimensions = new Point(3, 3);
 
     //default constructor. Will include
@@ -41,6 +45,7 @@ public class Bullet {
         timeRemaining = duration;
     }
 
+    // clone a bullet
     public Bullet(Bullet b) {
         location = new Point(b.getLocation());
         power = b.getPower();

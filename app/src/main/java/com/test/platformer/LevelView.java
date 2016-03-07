@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+// An unused class that I still haven't figured out how to safely delete. Please ignore.
+
 
 public class LevelView extends Fragment {
     Environment environment;

@@ -1,17 +1,15 @@
-package com.test.platformer;/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+package com.test.platformer;
 
 import android.graphics.Point;
 
 /**
  * @author Aaron Trusty
  */
+// last edited: 03/07/16
 public class Block {
+    // the location of the block
     Point location;
-    //location (x,y)
+    // the dimensions of the block
     Point dimensions;
 
     //default constructor

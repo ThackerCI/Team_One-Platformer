@@ -31,11 +31,11 @@ public class Character {
     private Point dimensions;
     //Scalar multiple effecting enemy attack
     private int defense;
-    //Max Velocity of the character = speed
+    //Max horizontal Velocity of the character = speed
     private int speed;
     //velocity of character
     private Point velocity;
-    //Scalar multiple effecting character attack
+    //Scalar multiple affecting character attack
     private int strength;
     //Current health of character
     private int health;
@@ -65,10 +65,10 @@ public class Character {
     }
 
     /**
-     * Resets Character's health and velocity
+     * Resets Character's health, direction, jumpTime, and velocity
      */
     public void reset() {
-        this.jumpTime = 0;
+        this.setJumpTime(0);
         this.setHealth(this.getMaxHealth());
         this.setDirection(1);
         this.setVelocity(new Point(0, 0));
@@ -192,13 +192,12 @@ public class Character {
         this.speed = speed;
     }
 
-/**************************Movement Functions*********************************************************/
-    /**
-     * Request that the character move itself based on a certain amount
-     * of time passing. This will also account for jump.
-     * <p>
-     * * @param delta The amount of time that has passed in milliseconds
-     */
+    /**************************
+     * Gameplay Functions
+     *********************************************************/
+
+    // c.horizontalMove(direction) sets character c's horizontal velocity to direction*c.speed,
+    // and sets c.direction to direction.
     public void horizontalMove(int direction) {
         //update the location of the entity based on move speeds
         this.setVelocityX(direction * this.getSpeed());
@@ -206,6 +205,8 @@ public class Character {
     }
 
 
+    // if the character can jump, set his vertical velocity to the negative of the gravity and
+    // reset the jump timer to maxJumpTime
     public void jump(boolean canJump) {
         if (canJump) {
 
@@ -214,8 +215,10 @@ public class Character {
         }
     }
 
+    // create a new bullet at the character's center
     public Bullet shoot() {
         Point leftCorner = this.getLocation();
+        // get the center of the character
         int x = leftCorner.x;
         int y = leftCorner.y;
         Point dim = this.getDimensions();
@@ -223,8 +226,10 @@ public class Character {
         int w = dim.x;
         h = h / 2;
         w = w / 2;
-        Point vel = new Point(this.direction * 5, 0);
         Point center = new Point(x + w, y + h);
+        // get the velocity for the bullet
+        Point vel = new Point(this.direction * 5, 0);
+        // return the new bullet
         return new Bullet(center, this.getStrength(), vel);
     }
 }

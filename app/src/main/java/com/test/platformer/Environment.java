@@ -1,8 +1,8 @@
 package com.test.platformer;
 
-/**
- * Created by Isaiah on 2/28/2016.
- */
+// Author: Isaiah Thacker
+// Last Modified: 3/07/16
+// Platformer Iteration 2
 
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -12,17 +12,25 @@ import java.util.List;
 
 
 public class Environment {
+    // blocks in the environment
     private List<Block> blocks;
+    // non-goal records in the environment
     private List<Record> records;
+    // bullets
     private List<Bullet> bullets;
+    // the goal record
     private Record goal;
+    // integer used for various loops
     private int i;
+    // iterationFlag used for a variety of purposes
     private boolean iterationFlag;
+    // constant gravity strength
     public static final int GRAVITY = 3;
+    // constant dimensions of blocks. May be set to vary later
     private final Point blockDimensions = new Point(30, 30);
 
 
-    // creating an empty level for level 1 and a test character
+    // creating a test character
     public static Character player = new Character(new Point(0, 0), new Point(30, 30), 3, 3, 3, 5);
 
 
@@ -33,6 +41,7 @@ public class Environment {
         //goal = new GoalRecord();
     }
 
+    // defining level one
     public Level levelOne() {
         List<Block> blocks1 = blocksOne();
         Record goal1 = new Record(new Point(8, 1), false);
@@ -41,23 +50,24 @@ public class Environment {
         return new Level(blocks1, new ArrayList<Record>(), goal1, starting1);
     }
 
+    // defining the blocks of level one
     public ArrayList<Block> blocksOne() {
         ArrayList<Block> blocks1 = new ArrayList<Block>();
-        blocks1.add(new Block(new Point(1, 0), blockDimensions));
-        blocks1.add(new Block(new Point(1, 1), blockDimensions));
-        blocks1.add(new Block(new Point(2, 1), blockDimensions));
-        blocks1.add(new Block(new Point(2, 2), blockDimensions));
-        blocks1.add(new Block(new Point(2, 3), blockDimensions));
-        blocks1.add(new Block(new Point(2, 4), blockDimensions));
-        blocks1.add(new Block(new Point(3, 4), blockDimensions));
-        blocks1.add(new Block(new Point(0, 0), blockDimensions));
+        blocks1.add(new Block(new Point(3, 2), blockDimensions));
+        blocks1.add(new Block(new Point(3, 3), blockDimensions));
+        blocks1.add(new Block(new Point(4, 3), blockDimensions));
         blocks1.add(new Block(new Point(4, 4), blockDimensions));
-        blocks1.add(new Block(new Point(5, 4), blockDimensions));
-        blocks1.add(new Block(new Point(6, 4), blockDimensions));
-        blocks1.add(new Block(new Point(7, 4), blockDimensions));
-        blocks1.add(new Block(new Point(6, 3), blockDimensions));
-        blocks1.add(new Block(new Point(7, 3), blockDimensions));
-        blocks1.add(new Block(new Point(7, 2), blockDimensions));
+        blocks1.add(new Block(new Point(4, 5), blockDimensions));
+        blocks1.add(new Block(new Point(4, 6), blockDimensions));
+        blocks1.add(new Block(new Point(5, 6), blockDimensions));
+        blocks1.add(new Block(new Point(2, 2), blockDimensions));
+        blocks1.add(new Block(new Point(6, 6), blockDimensions));
+        blocks1.add(new Block(new Point(7, 6), blockDimensions));
+        blocks1.add(new Block(new Point(8, 6), blockDimensions));
+        blocks1.add(new Block(new Point(9, 6), blockDimensions));
+        blocks1.add(new Block(new Point(8, 5), blockDimensions));
+        blocks1.add(new Block(new Point(9, 5), blockDimensions));
+        blocks1.add(new Block(new Point(9, 4), blockDimensions));
         return blocks1;
     }
 
@@ -81,8 +91,8 @@ public class Environment {
     }
 
 
-    // update(c) calls updateBullets(), updateCharacter(c), and updateRecords(c), then calls endLevel(1) if the
-    // iteration flag is thrown.
+    // update(c) calls updateBullets(), updateCharacter(c), and updateRecords(c), returns the
+    // iteration flag
     public boolean update(Character c, LevelActivity levelLayout) {
         updateBullets(levelLayout);
         updateCharacter(c);
@@ -97,12 +107,8 @@ public class Environment {
             Point tempLoc = new Point(tempBullet.getLocation());    // get the bullet's current location
             Point tempDims = new Point(tempBullet.getDimensions()); // get the bullet's dimensions
             int j;
-            if (tempBullet.getTimeRemaining() == 0) {                // if the bullet has expired
-//                levelActivity.removeView(tempBullet.getBulletView());
-//                levelLayout.removeView(tempBullet.getBulletView());
-//                this.bullets.remove(i);                             // delete the bullet
-//                --i;                                                // subtract from i since an element has been removed
-                tempBullet.setFlag(true);
+            if (tempBullet.getTimeRemaining() == 0) {               // if the bullet has expired
+                tempBullet.setFlag(true);                           // flag it for removal
                 iterationFlag = true;                               // keep the now nonexistent bullet from moving
                 break;                                              // no need to check the other blocks
             } else {
@@ -110,12 +116,7 @@ public class Environment {
                     Block curBlock = this.blocks.get(j);                // get the current block
                     if (boxIntersect(tempLoc, tempDims, curBlock.getLocation(), curBlock.getDimensions())) {// if this bullet is
                         // hitting a block
-//                        levelActivity.removeView(tempBullet.getBulletView());
-//                        levelLayout.removeView(tempBullet.getBulletView());
-//                        this.bullets.remove(i);                         // delete the bullet
-//                        --i;                                            // subtract from i since an element has been removed
-
-                        tempBullet.setFlag(true);
+                        tempBullet.setFlag(true);                       // flag it for removal
                         iterationFlag = true;                           // keep the now nonexistent bullet from moving
                         break;                                          // no need to check the other blocks
                     }
@@ -182,6 +183,7 @@ public class Environment {
         if (!onBlock(c) && c.getJumpTime() == 0) {
             c.setVelocityY(GRAVITY);
         }
+        // decrement c's jump time if applicable
         if (c.getJumpTime() > 0) {
             c.setJumpTime(c.getJumpTime() - 1);
         }
@@ -218,6 +220,7 @@ public class Environment {
         return r1.intersect(r2);
     }
 
+    // onBlock(c) returns true if character c is standing on a block, and false otherwise
     public boolean onBlock(Character c) {
         Point tempLoc = new Point(c.getLocation());
         tempLoc.offset(0, GRAVITY); // suppose the character falls

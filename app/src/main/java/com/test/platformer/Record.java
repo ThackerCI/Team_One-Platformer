@@ -1,23 +1,22 @@
 package com.test.platformer;//  Olutayo Elelu
-//  Last Edited: 02.29.16
+//  Last Edited: 03.07.16
 //  Record Breaker - Records Class
 //  Iteration 2
 
-//- Location (Point): Defined by our game mechanics. For now, a pair of ints serving as x and y coordinate. Functions include getLocation and setLocation.
-//- Sprite (Picture File reference): Color coordinated for different effects/Goal. Functions include getSprite.
-//- Track (MP3/Music File reference): Information relating to the actual MP3 of the object. Can be pulled by the game engine to play it. Functions include getTrack, playTrack
-//- Goal(Boolean): is the record a goal record or not? Used mainly by the main game engine to know when to end the level. Functions include isGoal and setGoal
+//- Location (Point): Defined by our game mechanics. For now, a point with x and y coordinate. Functions include getLocation and setLocation.
 //- Collect(Boolean): Has the record been collected? Functions include isCollected
 
 import android.graphics.Point;
 
 public class Record {
+    // the location of the record
     private Point location;
-    private String sprite;
-    //    private boolean goal;
+    // has the record been collected?
     private boolean collected;
+    // the constant dimensions of all records
     private final Point dimensions = new Point(30, 30);
 
+    // Point is given in "grid cell" format for convenience.
     public Record(Point p, boolean c) {
         location = p;
         p.x *= 30;
@@ -25,36 +24,25 @@ public class Record {
         collected = c;
     }
 
+    // clone a record
     public Record(Record R) {
         this.location = new Point(R.location);
         this.collected = R.collected;
     }
 
-    //Location
-    //Location (int x, int y): Defined by our game mechanics. For now, a pair of ints serving as x and y coordinate.
-    //Functions include getLocation and setLocation.
-    //represented as an array w/ 2 values
     public void setLocation(Point p) {
         location.x = p.x;
         location.y = p.y;
     }
 
+    // getLocation()
+    // returns the x and y coordinates of the record, with the top-left corner as the origin.
     public Point getLocation() {
         return location;
     }
 
-    //Goal(Boolean): is the record a goal record or not?
-    //Collect(Boolean): Has the record been collected? Functions include isCollected
-    //Used mainly by the main game engine to know when to end the level. Functions include isGoal and setGoal
-
-//    public boolean isGoal() {
-//        return goal;
-//    }
-
-//    public void setGoal() {
-//        goal = true;
-//    }
-
+    // isCollected()
+    // whether or not the record has been collected
     public boolean isCollected() {
         return collected;
     }
@@ -63,26 +51,10 @@ public class Record {
         collected = true;
     }
 
+    // getDimensions()
+    // returns the size of the record's sprite, hardcoded into the class
     public Point getDimensions() {
         return dimensions;
     }
-   /*
-   //- Sprite (Picture File reference): Color coordinated for different effects/Goal. Functions include getSprite.
-   
-   public void getSprite()
-   {
-   
-   }
-   
-   
-   
-   
-   //Track-related functions will be completed next iteration
-   */
 
-    public void printRecord() {
-        System.out.println("Location is " + getLocation());
-//        System.out.println("Is this a goal record: " + isGoal());
-        System.out.println("Has it been collected: " + isCollected());
-    }
 }

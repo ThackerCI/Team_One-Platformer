@@ -1,5 +1,10 @@
 package com.test.platformer;
 
+
+// Author: Isaiah Thacker
+// Last Modified: 3/07/16
+// Platformer Iteration 2
+
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -27,7 +32,7 @@ public class Controls extends Fragment {
         Button jumpButton = (Button) view.findViewById(R.id.jump_button);
         Button shootButton = (Button) view.findViewById(R.id.shoot_button);
 
-        // set the buttons to execute the proper functions on click.
+        // set the buttons to execute the proper functions on touch.
         leftButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -74,6 +79,7 @@ public class Controls extends Fragment {
         return view;
     }
 
+    // LevelActivity functions which will be used by this class
     public interface controlListener {
         void move(int d);
 
