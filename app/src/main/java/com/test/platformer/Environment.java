@@ -23,23 +23,37 @@ public class Environment {
 
 
     // creating an empty level for level 1 and a test character
-    List<Block> blocks1 = new ArrayList<Block>();
-    Level l1;
-    Character player = new Character(new Point(20, 20), 3, 5, 3, 5);
+    public static Character player = new Character(new Point(0, 0), new Point(30,30), 3, 5, 3, 5);
 
 
     public Environment() {
         blocks = new ArrayList<Block>();
         records = new ArrayList<Record>();
         bullets = new ArrayList<Bullet>();
-        Block b1 = new Block(new Point(15,15), new Point(30,30));
-        Block b2 = new Block(new Point(45,15), new Point(30,30));
-        blocks1.add(b1);
-        blocks1.add(b2);
-        l1 = new Level(blocks1, new ArrayList<Record>(), new Record(new Point(0, 0), false), new Point(0, 0));
         //goal = new GoalRecord();
     }
 
+    public Level levelOne(){
+        List<Block> blocks1 = blocksOne();
+        Record goal1 = new Record(new Point(240, 30), false);
+        Point starting1 = new Point(180,150);
+
+        return new Level(blocks1, new ArrayList<Record>(), goal1, starting1);
+    }
+
+    public ArrayList<Block> blocksOne(){
+        ArrayList<Block> blocks1 = new ArrayList<Block>();
+        blocks1.add(new Block(new Point(0,0), new Point(30,30)));
+        blocks1.add(new Block(new Point(30,0), new Point(30,30)));
+        blocks1.add(new Block(new Point(30,30), new Point(30,30)));
+        blocks1.add(new Block(new Point(60,30), new Point(30,30)));
+        blocks1.add(new Block(new Point(60,60), new Point(30,30)));
+        blocks1.add(new Block(new Point(60,90), new Point(30,30)));
+        blocks1.add(new Block(new Point(60,120), new Point(30,30)));
+        blocks1.add(new Block(new Point(90,120), new Point(30,30)));
+        blocks1.add(new Block(new Point(120,120), new Point(30,30)));
+        return blocks1;
+    }
 
 
     // addBullet(b) adds bullet b to the current environment.

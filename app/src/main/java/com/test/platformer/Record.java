@@ -16,7 +16,7 @@ public class Record {
     private String sprite;
     //    private boolean goal;
     private boolean collected;
-    private final Point dimensions = new Point(40, 40);
+    private final Point dimensions = new Point(30, 30);
 
     public Record(Point p, boolean c) {
         location = p;

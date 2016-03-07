@@ -51,8 +51,8 @@ public class Character {
     /**Initializes new Character*/
     public Character(Point location, Point dimensions, int strength,
                      int speed, int defense, int maxHealth) {
-        this.setLocation(location);
-        this.setDimensions(dimensions);
+        this.location = new Point(location);
+        this.dimensions = new Point(dimensions);
         this.setStrength(strength);
         this.setSpeed(speed);
         this.setDefense(defense);
@@ -163,7 +163,7 @@ public class Character {
      * Request that the character move itself based on a certain amount
      * of time passing. This will also account for jump.
      *
-     ** @param delta The amount of time that has passed in milliseconds
+     * * @param delta The amount of time that has passed in milliseconds
      */
     public void horizontalMove(int direction) {
         //update the location of the entity based on move speeds

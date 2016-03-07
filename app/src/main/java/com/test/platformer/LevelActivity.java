@@ -39,7 +39,7 @@ public class LevelActivity extends AppCompatActivity {
 
     public void initLevel(int i) {
         // load the level and the player character into the environment
-        environment.initialize(environment.l1, environment.player);
+        environment.initialize(environment.levelOne(), environment.player);
         // signal that the level has started
         started = true;
         // initialize the ImageViews
@@ -81,6 +81,27 @@ public class LevelActivity extends AppCompatActivity {
     }
 
     public void initRecordsView() {
+        // TODO: add loop for additional records. Currently just doing the goal, since that's all
+        // we have.
+        Record tempRecord = environment.getGoal(); // get the goal record
+        ImageView imageView = new ImageView(LevelActivity.this); // create a new ImageView
+        imageView.setImageResource(R.drawable.record);            // set the "block" sprite to it
+        // get the level layout
+        RelativeLayout RL = (RelativeLayout) findViewById(R.id.level_layout);
+        // get the dimensions for the sprite and convert them for the device's screen
+        int dimX = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                tempRecord.getDimensions().x, getResources().getDisplayMetrics());
+        int dimY = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                tempRecord.getDimensions().y, getResources().getDisplayMetrics());
+        // create new layout parameters for the sprite
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(dimX, dimY);
+        // get the location of the block and convert the coordinates for the device's screen
+        int newX = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, tempRecord.getLocation().x, getResources().getDisplayMetrics());
+        int newY = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, tempRecord.getLocation().y, getResources().getDisplayMetrics());
+        // set the margins for the ImageView (i.e. position on the screen)
+        layoutParams.setMargins(newX, newY, 0, 0);
+        // add the ImageView to the layout
+        RL.addView(imageView, layoutParams);
 
     }
 
