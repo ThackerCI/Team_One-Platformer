@@ -5,6 +5,7 @@ package com.test.platformer;
  */
 
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -77,13 +78,11 @@ public class Environment {
 
     // update(c) calls updateBullets(), updateCharacter(c), and updateRecords(c), then calls endLevel(1) if the
     // iteration flag is thrown.
-    public void update(Character c) {
+    public boolean update(Character c) {
         updateBullets();
         updateCharacter(c);
         updateRecords(c);
-        if (iterationFlag) {
-            endLevel(1);
-        }
+        return iterationFlag;
     }
 
     private void endLevel(int k) {
@@ -146,8 +145,7 @@ public class Environment {
             // Also, break.
             if (boxIntersect(tempLoc, c.getDimensions(), tempBlock.getLocation(), tempBlock.getDimensions())) {
                 tempLoc.set(tempLoc.x - c.getVelocity().x, tempLoc.y);
-                Point tempVelocity = new Point(0, c.getVelocity().y);
-                c.setVelocity(tempVelocity);
+                c.setVelocityX(0);
                 break;
             }
         }
@@ -160,11 +158,12 @@ public class Environment {
             // Also, break.
             if (boxIntersect(tempLoc, c.getDimensions(), tempBlock.getLocation(), tempBlock.getDimensions())) {
                 tempLoc.offset(0, -c.getVelocity().y);
-                Point tempVelocity = new Point(c.getVelocity().x, 0);
-                c.setVelocity(tempVelocity);
-                c.setJumpTime(0);
+                c.setVelocityY(0);
                 break;
             }
+        }
+        if (onBlock(c)){
+            c.setJumpTime(0);
         }
         // if the character isn't jumping and isn't standing on a block, start him falling.
         if (!onBlock(c) && c.getJumpTime() == 0) {
@@ -202,52 +201,9 @@ public class Environment {
     // anchored at point L2 with dimensions S2 overlap. (i.e. if one of the former box's corners is in the latter box,
     // or if all of the latter box's corners are in the former.)
     public static boolean boxIntersect(Point L1, Point S1, Point L2, Point S2) {
-        // Get the left and right "X" boundaries of the first box
-        int left1 = L1.x;
-        int right1 = left1 + S1.x;
-        // Get the top and bottom "Y" boundaries of the first box
-        int top1 = L1.y;
-        int bottom1 = top1 + S1.y;
-        // Get the left and right "X" boundaries of the second box
-        int left2 = L2.x;
-        int right2 = left2 + S2.x;
-        // Get the top and bottom "Y" boundaries of the second box
-        int top2 = L2.y;
-        int bottom2 = top2 + S2.y;
-
-        // check if the top-left point of the first box is in the second box.
-        if (((left2 < left1) && (left1 < right2)) && ((top2 < top1) && (top1 < bottom2))) {
-            return true;
-        }
-        // check if the top-right point of the first box is in the second box.
-        if (((left2 < right1) && (right1 < right2)) && ((top2 < top1) && (top1 < bottom2))) {
-            return true;
-        }
-        // check if the bottom-left point of the first box is in the second box.
-        if (((left2 < left1) && (left1 < right2)) && ((top2 < bottom1) && (bottom1 < bottom2))) {
-            return true;
-        }
-        // check if the bottom-right point of the first box is in the second box.
-        if (((left2 < right1) && (right1 < right2)) && ((top2 < bottom1) && (bottom1 < bottom2))) {
-            return true;
-        }
-        // if all of the above fail, then the only way the boxes intersect is if all of the points from the second box are
-        // in the first box, so we test to see if any of these points do NOT satisfy this condition, and, if so, return
-        // false
-        if (!(((left1 < right2) && (right2 < right1)) && ((top1 < bottom2) && (bottom2 < bottom1)))) {
-            return false;
-        }
-        if (!(((left1 < left2) && (left2 < right1)) && ((top1 < bottom2) && (bottom2 < bottom1)))) {
-            return false;
-        }
-        if (!(((left1 < right2) && (right2 < right1)) && ((top1 < top2) && (top2 < bottom1)))) {
-            return false;
-        }
-        if (!(((left1 < left2) && (left2 < right1)) && ((top1 < top2) && (top2 < bottom1)))) {
-            return false;
-        }
-        return true;
-
+        Rect r1 = new Rect(L1.x, L1.y, L1.x+S1.x-1, L1.y+S1.y-1);
+        Rect r2 = new Rect(L2.x, L2.y, L2.x+S2.x-1, L2.y+S2.y-1);
+        return r1.intersect(r2);
     }
 
     public boolean onBlock(Character c) {

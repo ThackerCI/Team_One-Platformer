@@ -1,9 +1,11 @@
 package com.test.platformer;
 
 import android.content.pm.ActivityInfo;
+import android.graphics.Point;
 import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Window;
 import android.view.WindowManager;
