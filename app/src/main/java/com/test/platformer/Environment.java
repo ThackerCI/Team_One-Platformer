@@ -19,7 +19,7 @@ public class Environment {
     private Record goal;
     private int i;
     private boolean iterationFlag;
-    private static final int GRAVITY = 5;
+    private static final int GRAVITY = 1;
 
 
     // creating an empty level for level 1 and a test character
@@ -36,7 +36,7 @@ public class Environment {
     public Level levelOne(){
         List<Block> blocks1 = blocksOne();
         Record goal1 = new Record(new Point(240, 30), false);
-        Point starting1 = new Point(180,150);
+        Point starting1 = new Point(120,60);
 
         return new Level(blocks1, new ArrayList<Record>(), goal1, starting1);
     }
@@ -162,13 +162,16 @@ public class Environment {
                 tempLoc.offset(0, -c.getVelocity().y);
                 Point tempVelocity = new Point(c.getVelocity().x, 0);
                 c.setVelocity(tempVelocity);
-                //FIXME::::: Set Grav immunity to zero at this point as well. !!!!!!!!!!!!!!!!!!!!
+                c.setJumpTime(0);
                 break;
             }
         }
         // if the character isn't jumping and isn't standing on a block, start him falling.
         if (!onBlock(c) && c.getJumpTime() == 0) {
             c.getVelocity().offset(0, GRAVITY);
+        }
+        if (c.getJumpTime() > 0){
+            c.setJumpTime(c.getJumpTime() - 1);
         }
 
         c.setLocation(tempLoc);   // set the character's new location

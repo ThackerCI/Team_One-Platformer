@@ -10,6 +10,7 @@ package com.test.platformer;
  */
 
 import android.graphics.Point;
+
 public class Character {
 
     //Cooldown time after each shot
@@ -48,7 +49,9 @@ public class Character {
         direction = 1;
     }
 
-    /**Initializes new Character*/
+    /**
+     * Initializes new Character
+     */
     public Character(Point location, Point dimensions, int strength,
                      int speed, int defense, int maxHealth) {
         this.location = new Point(location);
@@ -57,28 +60,43 @@ public class Character {
         this.setSpeed(speed);
         this.setDefense(defense);
         this.setMaxHealth(maxHealth);
+        this.setVelocity(new Point(0, 0));
     }
-    /**Resets Character's health and velocity*/
+
+    /**
+     * Resets Character's health and velocity
+     */
     public void reset() {
         this.setHealth(this.getMaxHealth());
         this.setDirection(1);
-        Point velocity = new Point(0, 0);
-        this.setVelocity(velocity);
+        this.setVelocity(new Point(0, 0));
     }
 
-    /**********************Get/Set Functions For Various Variables************************************/
+    /**********************
+     * Get/Set Functions For Various Variables
+     ************************************/
 
-    public void setVelocity(Point velocity) {this.velocity = velocity;}
-    public Point getVelocity() {return velocity;}
+    public void setVelocity(Point velocity) {
+        this.velocity = velocity;
+    }
 
-    public void setVelocityX(int x) {this.velocity.x = x;}
-    public void setVelocityY(int y) {this.velocity.y = y;}
+    public Point getVelocity() {
+        return velocity;
+    }
 
+    public void setVelocityX(int x) {
+        this.velocity.x = x;
+    }
+
+    public void setVelocityY(int y) {
+        this.velocity.y = y;
+    }
 
 
     public void setLocation(Point p) {
         this.location.set(p.x, p.y);
     }
+
     public Point getLocation() {
         return this.location;
     }
@@ -86,6 +104,7 @@ public class Character {
     public void setDefense(int defense) {
         this.defense = defense;
     }
+
     public int getDefense() {
         return defense;
     }
@@ -93,11 +112,15 @@ public class Character {
     public void setStrength(int strength) {
         this.strength = strength;
     }
-    public int getStrength(){return this.strength;}
+
+    public int getStrength() {
+        return this.strength;
+    }
 
     public void setHealth(int health) {
         this.health = health;
     }
+
     public int getHealth() {
         return health;
     }
@@ -106,6 +129,7 @@ public class Character {
     public void setMaxHealth(int maxHealth) {
         this.maxHealth = maxHealth;
     }
+
     public int getMaxHealth() {
         return maxHealth;
     }
@@ -113,6 +137,7 @@ public class Character {
     public void setDimensions(Point p) {
         dimensions.set(p.x, p.y);
     }
+
     public Point getDimensions() {
         return dimensions;
     }
@@ -120,6 +145,7 @@ public class Character {
     public int getShotCoolDown() {
         return shotCoolDown;
     }
+
     public void setShotCoolDown(int shotCoolDown) {
         this.shotCoolDown = shotCoolDown;
     }
@@ -131,6 +157,7 @@ public class Character {
     public double getInitialJump() {
         return initialJump;
     }
+
     public void setInitialJump(double initialJump) {
         this.initialJump = initialJump;
     }
@@ -138,6 +165,7 @@ public class Character {
     public int getJumpTime() {
         return jumpTime;
     }
+
     public void setJumpTime(int jumpTime) {
         this.jumpTime = jumpTime;
     }
@@ -149,6 +177,7 @@ public class Character {
     public int getDirection() {
         return direction;
     }
+
     public void setDirection(int direction) {
         this.direction = direction;
     }
@@ -156,13 +185,16 @@ public class Character {
     public int getSpeed() {
         return speed;
     }
-    public void setSpeed(int speed) {this.speed = speed;}
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
 
 /**************************Movement Functions*********************************************************/
     /**
      * Request that the character move itself based on a certain amount
      * of time passing. This will also account for jump.
-     *
+     * <p/>
      * * @param delta The amount of time that has passed in milliseconds
      */
     public void horizontalMove(int direction) {
@@ -174,7 +206,7 @@ public class Character {
     public void jump(boolean canJump) {
         if (canJump) {
 
-            this.setVelocityY(5);
+            this.setVelocityY(-1);
             this.setJumpTime(this.maxJumpTime);
         }
     }
@@ -186,11 +218,10 @@ public class Character {
         Point dim = this.getDimensions();
         int h = dim.y;
         int w = dim.x;
-        h = h/2;
-        w = w/2;
-        Point vel = new Point(5,0);
-        Point center = new Point(x + w,y - h);
-        Bullet shot = new Bullet(center, this.getStrength(), vel );
-        return shot;
+        h = h / 2;
+        w = w / 2;
+        Point vel = new Point(5, 0);
+        Point center = new Point(x + w, y - h);
+        return new Bullet(center, this.getStrength(), vel);
     }
 }

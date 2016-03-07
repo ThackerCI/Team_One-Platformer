@@ -1,6 +1,7 @@
 package com.test.platformer;
 
 import android.content.pm.ActivityInfo;
+import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -12,7 +13,11 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class LevelActivity extends AppCompatActivity {
+    Timer gameLoopTimer = new Timer();
     int value = 0;
     Environment environment = new Environment();
     boolean started = false;
@@ -35,11 +40,26 @@ public class LevelActivity extends AppCompatActivity {
             initLevel(savedLevelInfo);
         }
 
+        TimerTask refresh = new TimerTask() {
+            @Override
+            public void run() {
+                environment.update(Environment.player);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        updateCharacterView();
+                    }
+                });
+            }
+        };
+        // set refresh rate to once every 1/30th second, starting .5 seconds after creation.
+        gameLoopTimer.schedule(refresh, 500, 100);
+
     }
 
     public void initLevel(int i) {
         // load the level and the player character into the environment
-        environment.initialize(environment.levelOne(), environment.player);
+        environment.initialize(environment.levelOne(), Environment.player);
         // signal that the level has started
         started = true;
         // initialize the ImageViews
@@ -51,7 +71,7 @@ public class LevelActivity extends AppCompatActivity {
     public void initView() {
         initBlocksView();
         initRecordsView();
-        initCharacterView();
+        updateCharacterView();
     }
 
     public void initBlocksView() {
@@ -96,8 +116,10 @@ public class LevelActivity extends AppCompatActivity {
         // create new layout parameters for the sprite
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(dimX, dimY);
         // get the location of the block and convert the coordinates for the device's screen
-        int newX = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, tempRecord.getLocation().x, getResources().getDisplayMetrics());
-        int newY = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, tempRecord.getLocation().y, getResources().getDisplayMetrics());
+        int newX = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                tempRecord.getLocation().x, getResources().getDisplayMetrics());
+        int newY = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                tempRecord.getLocation().y, getResources().getDisplayMetrics());
         // set the margins for the ImageView (i.e. position on the screen)
         layoutParams.setMargins(newX, newY, 0, 0);
         // add the ImageView to the layout
@@ -105,8 +127,20 @@ public class LevelActivity extends AppCompatActivity {
 
     }
 
-    public void initCharacterView() {
-
+    public void updateCharacterView() {
+        // get the dimensions for the sprite and convert them for the device's screen
+        ImageView imageView = (ImageView) findViewById(R.id.character_sprite);
+        int dimX = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                Environment.player.getDimensions().x, getResources().getDisplayMetrics());
+        int dimY = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                Environment.player.getDimensions().y, getResources().getDisplayMetrics());
+        // get the location of the block and convert the coordinates for the device's screen
+        int newX = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, Environment.player.getLocation().x, getResources().getDisplayMetrics());
+        int newY = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, Environment.player.getLocation().y, getResources().getDisplayMetrics());
+        // create new layout parameters for the sprite
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(dimX, dimY);
+        layoutParams.setMargins(newX, newY, 0, 0);
+        imageView.setLayoutParams(layoutParams);
     }
 
 

@@ -1,12 +1,11 @@
 <resources>
     <string name="app_name">Platformer</string>
 
-    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="level_one">Level 1</string>
+
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
 
     <string name="title_activity_activity_level">activity_level</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
