@@ -60,8 +60,7 @@ public class LevelActivity extends AppCompatActivity implements Controls.control
                     });
                 } // else, return to the main menu
                 else {
-                    Intent mainIntent = new Intent(LevelActivity.this, MainActivity.class);
-                    startActivity(mainIntent);  // go to MainActivity with intent mainIntent
+                    LevelActivity.this.finish();
                 }
             }
         };
