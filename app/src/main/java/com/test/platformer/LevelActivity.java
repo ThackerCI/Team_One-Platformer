@@ -18,7 +18,7 @@ import org.w3c.dom.Text;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class LevelActivity extends AppCompatActivity {
+public class LevelActivity extends AppCompatActivity implements Controls.controlListener {
     Timer gameLoopTimer = new Timer();
     int value = 0;
     Environment environment = new Environment();
@@ -143,6 +143,24 @@ public class LevelActivity extends AppCompatActivity {
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(dimX, dimY);
         layoutParams.setMargins(newX, newY, 0, 0);
         imageView.setLayoutParams(layoutParams);
+    }
+
+    public void move(int d){
+        // make the character move in direction d.
+        Environment.player.horizontalMove(d);
+    }
+
+    public void jump(){
+        // make the player jump if possible.
+        Environment.player.jump(environment.onBlock(Environment.player));
+    }
+
+    public void shoot(){
+        Environment.player.shoot();
+    }
+
+    public void stopCharacter(){
+        Environment.player.setVelocityX(0);
     }
 
 

@@ -3,8 +3,10 @@ package com.test.platformer;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 
 public class Controls extends Fragment {
@@ -15,6 +17,62 @@ public class Controls extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_controls, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_controls, container, false);
+        // get the level activity
+        final LevelActivity levelActivity = (LevelActivity) getActivity();
+        // get the buttons
+        Button leftButton = (Button) view.findViewById(R.id.left_button);
+        Button rightButton = (Button) view.findViewById(R.id.right_button);
+        Button jumpButton = (Button) view.findViewById(R.id.jump_button);
+        Button shootButton = (Button) view.findViewById(R.id.shoot_button);
+
+        // set the buttons to execute the proper functions on click.
+        leftButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    levelActivity.move(-1);
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    levelActivity.stopCharacter();
+                }
+                return true;
+            }
+        });
+        rightButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    levelActivity.move(1);
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    levelActivity.stopCharacter();
+                }
+                return true;
+            }
+        });
+        jumpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                levelActivity.jump();
+            }
+        });
+        shootButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                levelActivity.shoot();
+            }
+        });
+
+        return view;
+    }
+
+    public interface controlListener {
+        void move(int d);
+
+        void jump();
+
+        void shoot();
+
+        void stopCharacter();
     }
 }
