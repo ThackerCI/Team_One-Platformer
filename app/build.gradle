@@ -4,6 +4,11 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
 
+    buildTypes{
+        debug {
+            debuggable true
+        }
+    }
     defaultConfig {
         applicationId "com.test.platformer"
         minSdkVersion 16
