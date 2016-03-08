@@ -142,6 +142,7 @@ public class LevelActivity extends AppCompatActivity implements Controls.control
         // iterate through the blocks in the environment
         for (int i = 0; i < environment.getBlocks().size(); ++i) {
             Block tempBlock = environment.getBlocks().get(i); // get the current block
+            // Much of the following code was adapted from principles on stackoverflow
             ImageView imageView = new ImageView(LevelActivity.this); // create a new ImageView
             imageView.setImageResource(R.drawable.block);            // set the "block" sprite to it
             // get the level layout
@@ -190,6 +191,7 @@ public class LevelActivity extends AppCompatActivity implements Controls.control
                 --i;
                 continue;
             }
+            // Much of the following code was adapted from principles on stackoverflow
             // get the dimensions for the sprite and convert them for the device's screen
             int dimX = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                     tempBullet.getDimensions().x, getResources().getDisplayMetrics());
@@ -218,6 +220,7 @@ public class LevelActivity extends AppCompatActivity implements Controls.control
         // TODO: add loop for additional records. Currently just doing the goal, since that's all
         // we have.
         Record tempRecord = environment.getGoal(); // get the goal record
+        // Much of the following code was adapted from principles on stackoverflow
         ImageView imageView = new ImageView(LevelActivity.this); // create a new ImageView
         imageView.setImageResource(R.drawable.record);            // set the "block" sprite to it
         // get the level layout
@@ -245,6 +248,7 @@ public class LevelActivity extends AppCompatActivity implements Controls.control
 
     // update the character's ImageView
     public void updateCharacterView() {
+        // Much of the following code was adapted from principles on stackoverflow
         // get the dimensions for the sprite and convert them for the device's screen
         ImageView imageView = (ImageView) findViewById(R.id.character_sprite);
 

@@ -45,7 +45,7 @@ public class Environment {
     public Level levelOne() {
         List<Block> blocks1 = blocksOne();
         Record goal1 = new Record(new Point(8, 1), false);
-        Point starting1 = new Point(120, 60);
+        Point starting1 = new Point(150, 90);
 
         return new Level(blocks1, new ArrayList<Record>(), goal1, starting1);
     }
@@ -54,7 +54,7 @@ public class Environment {
     public ArrayList<Block> blocksOne() {
         ArrayList<Block> blocks1 = new ArrayList<Block>();
         blocks1.add(new Block(new Point(3, 2), blockDimensions));
-        blocks1.add(new Block(new Point(3, 3), blockDimensions));
+        blocks1.add(new Block(new Point(4, 2), blockDimensions));
         blocks1.add(new Block(new Point(4, 3), blockDimensions));
         blocks1.add(new Block(new Point(4, 4), blockDimensions));
         blocks1.add(new Block(new Point(4, 5), blockDimensions));
@@ -68,6 +68,11 @@ public class Environment {
         blocks1.add(new Block(new Point(8, 5), blockDimensions));
         blocks1.add(new Block(new Point(9, 5), blockDimensions));
         blocks1.add(new Block(new Point(9, 4), blockDimensions));
+        blocks1.add(new Block(new Point(10, 4), blockDimensions));
+        blocks1.add(new Block(new Point(11, 4), blockDimensions));
+        blocks1.add(new Block(new Point(11, 3), blockDimensions));
+        blocks1.add(new Block(new Point(11, 2), blockDimensions));
+        blocks1.add(new Block(new Point(11, 1), blockDimensions));
         return blocks1;
     }
 
