@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     // start is called when the "Level 1" button is pressed
-    public void start() {
+    public void start(View view) {
         int levelID = 1;
 
         // create a new intent
