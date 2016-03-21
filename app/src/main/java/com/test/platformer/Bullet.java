@@ -3,10 +3,11 @@ package com.test.platformer;
 import android.graphics.Point;
 import android.view.View;
 
-/**
- * @author Aaron Trusty
- */
-// last edited: 03/07/16
+// Author: Aaron Trusty
+// Last Modified: 03/20/16 by Isaiah Thacker
+// Iteration 2
+// The Bullet class defines objects representing player and enemy bullets within a level.
+
 public class Bullet {
     // the ImageView associated with the bullet
     private View bulletView;

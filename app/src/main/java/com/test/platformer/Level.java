@@ -1,14 +1,12 @@
 package com.test.platformer;
 
 // Author: Isaiah Thacker
-// Last Modified: 3/07/16
+// Last Modified: 3/20/16 by Isaiah Thacker
 // Platformer Iteration 2
+// The Level class defines objects which record data on the various levels that can be played in
+// the game (list of blocks in the level, records in the level, and character starting point.)
 
 import android.graphics.Point;
-
-/**
- * Created by Isaiah on 2/28/2016.
- */
 
 import java.util.List;
 
@@ -28,7 +26,6 @@ public class Level {
         this.records = r;
         this.goal = g;
         this.startingPoint = s;
-        return;
     }
 
     public Point getStartingPoint() {

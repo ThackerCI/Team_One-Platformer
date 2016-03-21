@@ -1,8 +1,11 @@
 package com.test.platformer;
 
 // Author: Isaiah Thacker
-// Last Modified: 3/07/16
+// Last Modified: 3/20/16 by Isaiah Thacker
 // Platformer Iteration 2
+// The Environment class defines objects which contain all data on the current gameplay environment
+// (level layout, character locations, and so forth.) It can load data from levels into its fields,
+// and update its current state based on the rules of the game.
 
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -35,9 +38,9 @@ public class Environment {
 
 
     public Environment() {
-        blocks = new ArrayList<Block>();
-        records = new ArrayList<Record>();
-        bullets = new ArrayList<Bullet>();
+        blocks = new ArrayList<>();
+        records = new ArrayList<>();
+        bullets = new ArrayList<>();
         //goal = new GoalRecord();
     }
 
@@ -51,8 +54,8 @@ public class Environment {
     }
 
     // defining the blocks of level one
-    public ArrayList<Block> blocksOne() {
-        ArrayList<Block> blocks1 = new ArrayList<Block>();
+    private ArrayList<Block> blocksOne() {
+        ArrayList<Block> blocks1 = new ArrayList<>();
         blocks1.add(new Block(new Point(3, 2), blockDimensions));
         blocks1.add(new Block(new Point(4, 2), blockDimensions));
         blocks1.add(new Block(new Point(4, 3), blockDimensions));
@@ -98,14 +101,14 @@ public class Environment {
 
     // update(c) calls updateBullets(), updateCharacter(c), and updateRecords(c), returns the
     // iteration flag
-    public boolean update(Character c, LevelActivity levelLayout) {
-        updateBullets(levelLayout);
+    public boolean update(Character c) {
+        updateBullets();
         updateCharacter(c);
         updateRecords(c);
         return iterationFlag;
     }
 
-    private void updateBullets(LevelActivity levelActivity) {
+    private void updateBullets() {
         for (i = 0; i < this.bullets.size(); ++i) {                 // iterate through all bullets
             iterationFlag = false;                                  // reset the flag
             Bullet tempBullet = this.bullets.get(i);

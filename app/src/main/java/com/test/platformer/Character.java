@@ -1,13 +1,13 @@
 package com.test.platformer;
 
-/**
- * A character is what will be controlled by the player.The character
- * class is responsible for resolving and appropriately outputting
- * player inputs.
- *
- * @author John Hale
- * Help from Kevin Glass and Dr. Jerry Perez's Space Invader's project.
- */
+
+// Author: John Hale
+// Last Modified: 3/20/16 by Isaiah Thacker
+// Iteration 2
+// The Character class defines the object which will represent the data on the player's
+// controlled character.
+
+// Help from Kevin Glass and Dr. Jerry Perez's Space Invader's project.
 
 import android.graphics.Point;
 

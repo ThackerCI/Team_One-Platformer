@@ -1,7 +1,9 @@
-package com.test.platformer;//  Olutayo Elelu
-//  Last Edited: 03.07.16
-//  Record Breaker - Records Class
-//  Iteration 2
+package com.test.platformer;
+
+// Author: Olutayo Elelu
+// Last Modified: 03/20/16 by Isaiah Thacker
+// Iteration 2
+// The record class defines the records the player may collect within the game environment.
 
 //- Location (Point): Defined by our game mechanics. For now, a point with x and y coordinate. Functions include getLocation and setLocation.
 //- Collect(Boolean): Has the record been collected? Functions include isCollected

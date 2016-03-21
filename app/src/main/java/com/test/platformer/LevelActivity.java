@@ -1,8 +1,10 @@
 package com.test.platformer;
 
 // Author: Isaiah Thacker
-// Last Modified: 3/07/16
+// Last Modified: 3/20/16 by Isaiah Thacker
 // Platformer Iteration 2
+// LevelActivity defines the activity responsible for displaying and running the in-game
+// environment.
 
 import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
@@ -20,18 +22,18 @@ import java.util.TimerTask;
 
 public class LevelActivity extends AppCompatActivity implements Controls.controlListener {
     // set up the game loop timer
-    Timer gameLoopTimer = new Timer();
+    private Timer gameLoopTimer = new Timer();
     // integer used for testing purposes
-    int value = 0;
+    private int value = 0;
     // set up an environment
-    Environment environment = new Environment();
+    private Environment environment = new Environment();
     // set up flags for if the level is started and running
-    boolean started = false;
-    boolean running = false;
+    private boolean started = false;
+    private boolean running = false;
     // integer used for getting the desired level's ID
-    int savedLevelInfo;
+    private int savedLevelInfo;
     // constant is the reciprocal of the framerate
-    final int FRAME_DURATION = 33;
+    private final int FRAME_DURATION = 33;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +67,7 @@ public class LevelActivity extends AppCompatActivity implements Controls.control
                 // if the game isn't paused (or stopped for some other reason)
                 if (running) {
                     // run the update function. If the player hasn't reached the goal, update the views
-                    if (!environment.update(Environment.player, LevelActivity.this)) {
+                    if (!environment.update(Environment.player)) {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -118,7 +120,8 @@ public class LevelActivity extends AppCompatActivity implements Controls.control
         gameLoopTimer.cancel();
     }
 
-    // initialize level i
+    // initialize level i (currently set to always initialize level 1. Will be altered when new
+    // levels are added
     public void initLevel(int i) {
         // load the level and the player character into the environment
         environment.initialize(environment.levelOne(), Environment.player);

@@ -2,15 +2,16 @@ package com.test.platformer;
 
 import android.graphics.Point;
 
-/**
- * @author Aaron Trusty
- */
-// last edited: 03/07/16
+// Author: Aaron Trusty
+// Last Modified: 3/20/16 by Isaiah Thacker
+// Platformer Iteration 2
+// The Block class defines objects which represent impassible walls and floors in a level.
+
 public class Block {
     // the location of the block
-    Point location;
+    private Point location;
     // the dimensions of the block
-    Point dimensions;
+    private Point dimensions;
 
     //default constructor
     public Block() {
