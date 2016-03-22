@@ -41,7 +41,6 @@ public class Environment {
         blocks = new ArrayList<>();
         records = new ArrayList<>();
         bullets = new ArrayList<>();
-        //goal = new GoalRecord();
     }
 
     // defining level one
@@ -99,12 +98,12 @@ public class Environment {
     }
 
 
-    // update(c) calls updateBullets(), updateCharacter(c), and updateRecords(c), returns the
-    // iteration flag
-    public boolean update(Character c) {
+    // update(playerChar) calls updateBullets(), updateCharacter(playerChar), and
+    // updateRecords(playerChar), returns the iteration flag
+    public boolean update(Character playerChar) {
         updateBullets();
-        updateCharacter(c);
-        updateRecords(c);
+        updateCharacter(playerChar);
+        updateRecords(playerChar);
         return iterationFlag;
     }
 
@@ -139,64 +138,68 @@ public class Environment {
         iterationFlag = false;                                     // Reset the flag for later use
     }
 
-    // Currently, updateRecords(c) throws the iteration flag if c is intersecting the goal record.
-    private void updateRecords(Character c) {
+    // Currently, updateRecords(playerChar) throws the iteration flag if character playerChar is
+    // intersecting the goal record.
+    private void updateRecords(Character playerChar) {
 //    for (i = 0; i < this.records.size(); ++i){                 // iterate through all records. WILL BE ADDED WHEN
 //                                                               // WE ADD MORE RECORDS
 //    }
         Point goalLoc = this.goal.getLocation();
         Point goalDims = this.goal.getDimensions();
-        Point charLoc = c.getLocation();
-        Point charDims = c.getDimensions();
+        Point charLoc = playerChar.getLocation();
+        Point charDims = playerChar.getDimensions();
         if (boxIntersect(goalLoc, goalDims, charLoc, charDims)) {   // see if the character is intersecting the goal
             iterationFlag = true;                                    // if so, set the flag so that we can end the level.
         }
     }
 
 
-    // updateCharacter(c) first moves character c horizontally if doing so would not cause the player to move into a block
-    // If this condition is not satisfied, c's horizontal velocity is set to zero.
-    // updateCharacter(c) then moves character c vertically if doing so would not cause the player to move into a block
-    // If this condition is not satisfied, c's vertical velocity is set to zero.
-    private void updateCharacter(Character c) {
+    // updateCharacter(playerChar) first moves character playerChar horizontally if doing so would
+    // not cause the player to move into a block
+    // If this condition is not satisfied, playerChar's horizontal velocity is set to zero.
+    // updateCharacter(playerChar) then moves character playerChar vertically if doing so would not
+    // cause the player to move into a block
+    // If this condition is not satisfied, playerChar's vertical velocity is set to zero.
+    private void updateCharacter(Character playerChar) {
         // load the character's current location into a temp variable
-        Point tempLoc = new Point(c.getLocation().x, c.getLocation().y);
+        Point tempLoc = new Point(playerChar.getLocation().x, playerChar.getLocation().y);
         // move the temp variable horizontally according to the character's velocity
-        tempLoc.set(tempLoc.x + c.getVelocity().x, tempLoc.y);
-        // Iterate through all blocks, seeing if this movement would cause c to intersect the block
+        tempLoc.set(tempLoc.x + playerChar.getVelocity().x, tempLoc.y);
+        // Iterate through all blocks, seeing if this movement would cause playerChar to intersect the block
         for (i = 0; i < this.getBlocks().size(); ++i) {
             Block tempBlock = this.getBlocks().get(i);
-            // if a block would intersect c, move the temp location back and reduce c's horizontal velocity to zero.
+            // if a block would intersect playerChar, move the temp location back and reduce
+            // playerChar's horizontal velocity to zero.
             // Also, break.
-            if (boxIntersect(tempLoc, c.getDimensions(), tempBlock.getLocation(), tempBlock.getDimensions())) {
-                tempLoc.set(tempLoc.x - c.getVelocity().x, tempLoc.y);
-                c.setVelocityX(0);
+            if (boxIntersect(tempLoc, playerChar.getDimensions(), tempBlock.getLocation(), tempBlock.getDimensions())) {
+                tempLoc.set(tempLoc.x - playerChar.getVelocity().x, tempLoc.y);
+                playerChar.setVelocityX(0);
                 break;
             }
         }
         // move the temp variable vertically according to the character's velocity
-        tempLoc.offset(0, c.getVelocity().y);
-        // Iterate through all blocks, seeing if this movement would cause c to intersect the block
+        tempLoc.offset(0, playerChar.getVelocity().y);
+        // Iterate through all blocks, seeing if this movement would cause playerChar to intersect the block
         for (i = 0; i < this.getBlocks().size(); ++i) {
             Block tempBlock = this.getBlocks().get(i);
-            // if a block would intersect c, move the temp location back and reduce c's vertical velocity to zero.
+            // if a block would intersect playerChar, move the temp location back and reduce playerChar's vertical velocity to zero.
             // Also, break.
-            if (boxIntersect(tempLoc, c.getDimensions(), tempBlock.getLocation(), tempBlock.getDimensions())) {
-                tempLoc.offset(0, -c.getVelocity().y);
-                c.setVelocityY(0);
+            if (boxIntersect(tempLoc, playerChar.getDimensions(), tempBlock.getLocation(), tempBlock.getDimensions())) {
+                tempLoc.offset(0, -playerChar.getVelocity().y);
+                playerChar.setVelocityY(0);
                 break;
             }
         }
         // if the character isn't jumping and isn't standing on a block, start him falling.
-        if (!onBlock(c) && c.getJumpTime() == 0) {
-            c.setVelocityY(GRAVITY);
+        if (!onBlock(playerChar) && playerChar.getJumpTime() == 0) {
+            playerChar.setVelocityY(GRAVITY);
         }
-        // decrement c's jump time if applicable
-        if (c.getJumpTime() > 0) {
-            c.setJumpTime(c.getJumpTime() - 1);
+        // decrement playerChar's jump time if applicable
+        if (playerChar.getJumpTime() > 0) {
+            playerChar.setJumpTime(playerChar.getJumpTime() - 1);
         }
 
-        c.setLocation(tempLoc);   // set the character's new location
+        playerChar.setLocation(tempLoc);   // set the character's new location
     }
 
     // getGoal() returns the goal record in the current environment.
@@ -222,25 +225,25 @@ public class Environment {
     // boxIntersect(L1, S1, L2, S2) returns true if the box anchored at point L1 with dimensions S1 and the box
     // anchored at point L2 with dimensions S2 overlap. (i.e. if one of the former box's corners is in the latter box,
     // or if all of the latter box's corners are in the former.)
-    public static boolean boxIntersect(Point L1, Point S1, Point L2, Point S2) {
-        Rect r1 = new Rect(L1.x, L1.y, L1.x + S1.x - 1, L1.y + S1.y - 1);
-        Rect r2 = new Rect(L2.x, L2.y, L2.x + S2.x - 1, L2.y + S2.y - 1);
+    public static boolean boxIntersect(Point location1, Point dimensions1, Point location2, Point dimensions2) {
+        Rect r1 = new Rect(location1.x, location1.y, location1.x + dimensions1.x - 1, location1.y + dimensions1.y - 1);
+        Rect r2 = new Rect(location2.x, location2.y, location2.x + dimensions2.x - 1, location2.y + dimensions2.y - 1);
         return r1.intersect(r2);
     }
 
-    // onBlock(c) returns true if character c is standing on a block, and false otherwise
-    public boolean onBlock(Character c) {
-        Point tempLoc = new Point(c.getLocation());
+    // onBlock(playerChar) returns true if character playerChar is standing on a block, and false otherwise
+    public boolean onBlock(Character playerChar) {
+        Point tempLoc = new Point(playerChar.getLocation());
         tempLoc.offset(0, GRAVITY); // suppose the character falls
-        // Iterate through all blocks, seeing if this movement would cause c to intersect the block
+        // Iterate through all blocks, seeing if this movement would cause playerChar to intersect the block
         for (i = 0; i < this.getBlocks().size(); ++i) {
             Block tempBlock = this.getBlocks().get(i);
             // if one of the blocks WOULD intersect, return true
-            if (boxIntersect(tempLoc, c.getDimensions(), tempBlock.getLocation(), tempBlock.getDimensions())) {
+            if (boxIntersect(tempLoc, playerChar.getDimensions(), tempBlock.getLocation(), tempBlock.getDimensions())) {
                 return true;
             }
         }
-        // if c wouldn't intersect a block, return false.
+        // if playerChar wouldn't intersect a block, return false.
         return false;
     }
 }

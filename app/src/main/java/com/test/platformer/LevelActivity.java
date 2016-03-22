@@ -271,10 +271,10 @@ public class LevelActivity extends AppCompatActivity implements Controls.control
         imageView.setLayoutParams(layoutParams);
     }
 
-    // set the character moving in direction d
-    public void move(int d) {
-        // make the character move in direction d.
-        Environment.player.horizontalMove(d);
+    // set the character moving in the given direction
+    public void move(int direction) {
+        // make the character move in the given direction.
+        Environment.player.horizontalMove(direction);
     }
 
     public void jump() {
