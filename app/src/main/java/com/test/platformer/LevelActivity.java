@@ -1,8 +1,8 @@
 package com.test.platformer;
 
 // Author: Isaiah Thacker
-// Last Modified: 3/20/16 by Isaiah Thacker
-// Platformer Iteration 2
+// Last Modified: 3/21/16 by Isaiah Thacker
+// Iteration 2
 // LevelActivity defines the activity responsible for displaying and running the in-game
 // environment.
 

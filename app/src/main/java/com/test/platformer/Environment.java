@@ -1,8 +1,8 @@
 package com.test.platformer;
 
 // Author: Isaiah Thacker
-// Last Modified: 3/20/16 by Isaiah Thacker
-// Platformer Iteration 2
+// Last Modified: 3/21/16 by Isaiah Thacker
+// Iteration 2
 // The Environment class defines objects which contain all data on the current gameplay environment
 // (level layout, character locations, and so forth.) It can load data from levels into its fields,
 // and update its current state based on the rules of the game.
